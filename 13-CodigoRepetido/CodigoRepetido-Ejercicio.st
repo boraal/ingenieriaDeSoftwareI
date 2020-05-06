@@ -21,7 +21,7 @@ TestCase subclass: #CustomerBookTest
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:42:02'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:42:02'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
 	| customerBook |
@@ -32,7 +32,7 @@ test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:42:08'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:42:08'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 
 	| customerBook paulMcCartney |
@@ -43,7 +43,7 @@ test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	self operation: [customerBook removeCustomerNamed: paulMcCartney] ShouldNotTakeMoreMillisecondsThan: 100.
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:42:14'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:42:14'!
 test03CanNotAddACustomerWithEmptyName 
 
 	| customerBook |
@@ -57,7 +57,7 @@ test03CanNotAddACustomerWithEmptyName
 			self assert: customerBook isEmpty ].
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:42:23'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:42:23'!
 test04CanNotRemoveAnInvalidCustomer
 	
 	| customerBook johnLennon |
@@ -73,7 +73,7 @@ test04CanNotRemoveAnInvalidCustomer
 
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:45:16'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:45:16'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
@@ -91,7 +91,7 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:45:19'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:45:19'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
@@ -110,7 +110,7 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:42:41'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:42:41'!
 test07CanNotSuspendAnInvalidCustomer
 	
 	| customerBook johnLennon |
@@ -126,7 +126,7 @@ test07CanNotSuspendAnInvalidCustomer
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:42:47'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'AAB 5/4/2020 21:42:47'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
 	| customerBook johnLennon |
@@ -178,22 +178,22 @@ Object subclass: #CustomerBook
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
 
-!CustomerBook methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:36:21'!
+!CustomerBook methodsFor: 'queries' stamp: 'AAB 5/4/2020 21:36:21'!
 includesActiveCustomerNamed: customerName
 
 	^(active includes: customerName)! !
 
-!CustomerBook methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:36:31'!
+!CustomerBook methodsFor: 'queries' stamp: 'AAB 5/4/2020 21:36:31'!
 includesCustomerNamed: customerName
 
 	^(self includesActiveCustomerNamed: customerName) or: [ self includesSuspendedCustomerNamed: customerName]! !
 
-!CustomerBook methodsFor: 'testing' stamp: 'AAB 5/4/2020 21:36:37'!
+!CustomerBook methodsFor: 'queries' stamp: 'AAB 5/4/2020 21:36:37'!
 includesSuspendedCustomerNamed: customerName
 
 	^(suspended includes: customerName)! !
 
-!CustomerBook methodsFor: 'testing' stamp: 'NR 4/3/2019 10:14:26'!
+!CustomerBook methodsFor: 'queries' stamp: 'NR 4/3/2019 10:14:26'!
 isEmpty
 	
 	^active isEmpty and: [ suspended isEmpty ]! !
@@ -235,11 +235,11 @@ numberOfSuspendedCustomers
 	
 	^suspended size! !
 
-!CustomerBook methodsFor: 'customer management' stamp: 'AAB 5/2/2020 16:30:39'!
-removeCustomerNamed: aName 
+!CustomerBook methodsFor: 'customer management' stamp: 'AAB 5/6/2020 14:39:17'!
+removeCustomerNamed: customerName 
 
-	((self removeCustomerNamed: aName in: active) or:
-	[self removeCustomerNamed: aName in: suspended]) ifTrue: [^aName ].
+	((self removeCustomerNamed: customerName in: active) or:
+	[self removeCustomerNamed: customerName in: suspended]) ifTrue: [^customerName ].
 	
 	^ NotFound signal.
 ! !

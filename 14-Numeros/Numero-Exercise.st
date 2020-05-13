@@ -363,26 +363,26 @@ Numero subclass: #Entero
 	poolDictionaries: ''
 	category: 'Numero-Exercise'!
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:21:15'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:30:23'!
 * aMultiplier 
-	^aMultiplier multiplyWithAnInteger: self
+	^aMultiplier multiplyWithAnEntero: self
 
 	! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:17:39'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:28:19'!
 + anAdder 
-	^anAdder sumWithAnInteger: self
+	^anAdder sumWithAnEntero: self
 
 ! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:20:30'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:29:53'!
 - aSubtrahend 
 
-	^ aSubtrahend substractionWithAnInteger: self. ! !
+	^ aSubtrahend substractionWithAnEntero: self. ! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:22:04'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:30:42'!
 / aDivisor 
-	^aDivisor divisionWithAnInteger: self.! !
+	^aDivisor divisionWithAnEntero: self.! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:55'!
 // aDivisor 
@@ -409,43 +409,43 @@ greatestCommonDivisorWith: anInteger
 	^self class with: (value gcd: anInteger integerValue)! !
 
 
-!Entero methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:22:26'!
-divisionWithAFraction: aFractionDividend 
+!Entero methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:31:48'!
+divisionWithAFraccion: aFraccionDividend 
 	
-	^Fraccion with: (aFractionDividend numerator) over: (aFractionDividend denominator * self) ! !
+	^Fraccion with: (aFraccionDividend numerator) over: (aFraccionDividend denominator * self) ! !
 
-!Entero methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:21:48'!
-multiplyWithAFraction: aFractionToMultiply
-	^self * aFractionToMultiply! !
+!Entero methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:31:33'!
+multiplyWithAFraccion: aFraccionToMultiply
+	^self * aFraccionToMultiply! !
 
-!Entero methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:20:56'!
-substractionWithAFraction: aFractionMinuend
+!Entero methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:31:17'!
+substractionWithAFraccion: aFraccionMinuend
 	
-	^ self negated + aFractionMinuend  
+	^ self negated + aFraccionMinuend  
 
 ! !
 
-!Entero methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:19:43'!
-sumWithAFraction: aFractionToAdd
-	^self +aFractionToAdd! !
+!Entero methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:28:57'!
+sumWithAFraccion: aFraccionToAdd
+	^self +aFraccionToAdd! !
 
 
-!Entero methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:22:11'!
-divisionWithAnInteger: anIntegerDividend 
+!Entero methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:30:48'!
+divisionWithAnEntero: anEnteroDividend 
 
-	^Fraccion with: anIntegerDividend over: self! !
+	^Fraccion with: anEnteroDividend over: self! !
 
-!Entero methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:21:24'!
-multiplyWithAnInteger: anIntegerToMultiply 
-	^self class with: value * anIntegerToMultiply integerValue! !
+!Entero methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:30:30'!
+multiplyWithAnEntero: anEnteroToMultiply 
+	^self class with: value * anEnteroToMultiply integerValue! !
 
-!Entero methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:20:35'!
-substractionWithAnInteger: anIntegerMinuend
-	^self class with: anIntegerMinuend integerValue - value! !
+!Entero methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:30:03'!
+substractionWithAnEntero: anEnteroMinuend
+	^self class with: anEnteroMinuend integerValue - value! !
 
-!Entero methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:18:38'!
-sumWithAnInteger: anIntegerToAdd
-	^self class with: value + anIntegerToAdd integerValue! !
+!Entero methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:28:29'!
+sumWithAnEntero: anEnteroToAdd
+	^self class with: value + anEnteroToAdd integerValue! !
 
 
 !Entero methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 21:01'!
@@ -531,85 +531,85 @@ numerator
 	^ numerator! !
 
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:21:41'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:31:28'!
 * aMultiplier 
-	^aMultiplier multiplyWithAFraction: self
+	^aMultiplier multiplyWithAFraccion: self
 	! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:19:36'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:28:51'!
 + anAdder 
 	
-	^anAdder sumWithAFraction: self.
+	^anAdder sumWithAFraccion: self.
 ! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:20:50'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:31:10'!
 - aSubtrahend 
-	^aSubtrahend substractionWithAFraction: self! !
+	^aSubtrahend substractionWithAFraccion: self! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/11/2020 20:22:21'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'AAB 5/13/2020 10:31:42'!
 / aDivisor 
-	^aDivisor divisionWithAFraction: self! !
+	^aDivisor divisionWithAFraccion: self! !
 
 
-!Fraccion methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:24:10'!
-divisionWithAFraction: aFractionDividend
+!Fraccion methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:33:50'!
+divisionWithAFraccion: aFraccionDividend
 
-	^(aFractionDividend numerator * denominator) / (aFractionDividend denominator * numerator)! !
+	^(aFraccionDividend numerator * denominator) / (aFraccionDividend denominator * numerator)! !
 
-!Fraccion methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:23:49'!
-multiplyWithAFraction: aFractionToMultiply
+!Fraccion methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:33:43'!
+multiplyWithAFraccion: aFraccionToMultiply
 
-	^(numerator * aFractionToMultiply numerator) / (denominator * aFractionToMultiply denominator) ! !
+	^(numerator * aFraccionToMultiply numerator) / (denominator * aFraccionToMultiply denominator) ! !
 
-!Fraccion methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:23:31'!
-substractionWithAFraction: aFractionMinuend
+!Fraccion methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:33:35'!
+substractionWithAFraccion: aFraccionMinuend
 	
 	| newNumerator newDenominator |
 
-	newNumerator := (denominator * aFractionMinuend numerator) - (numerator * aFractionMinuend denominator).
-	newDenominator := denominator * aFractionMinuend denominator.
+	newNumerator := (denominator * aFraccionMinuend numerator) - (numerator * aFraccionMinuend denominator).
+	newDenominator := denominator * aFraccionMinuend denominator.
 	
 	^newNumerator / newDenominator 
 ! !
 
-!Fraccion methodsFor: 'arithmetic operations with fractions' stamp: 'AAB 5/11/2020 20:23:17'!
-sumWithAFraction: aFractionToAdd
+!Fraccion methodsFor: 'arithmetic operations with Fracciones' stamp: 'AAB 5/13/2020 10:33:27'!
+sumWithAFraccion: aFraccionToAdd
 
 	| newNumerator newDenominator |
 
-	newNumerator := (numerator * aFractionToAdd denominator) + (denominator * aFractionToAdd numerator).
-	newDenominator := denominator * aFractionToAdd denominator.
+	newNumerator := (numerator * aFraccionToAdd denominator) + (denominator * aFraccionToAdd numerator).
+	newDenominator := denominator * aFraccionToAdd denominator.
 	
 	^newNumerator / newDenominator ! !
 
 
-!Fraccion methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:24:01'!
-divisionWithAnInteger: anIntegerDividend
+!Fraccion methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:33:08'!
+divisionWithAnEntero: anEnteroDividend
 
 	| newNumerator newDenominator |
-	newNumerator := denominator * anIntegerDividend.
+	newNumerator := denominator * anEnteroDividend.
 	newDenominator := numerator .
 	^Fraccion with: newNumerator over: newDenominator! !
 
-!Fraccion methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:23:41'!
-multiplyWithAnInteger: anIntegerToMultiply
+!Fraccion methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:32:58'!
+multiplyWithAnEntero: anEnteroToMultiply
 
 	|newNumerator newDenominator |
 
-	newNumerator := anIntegerToMultiply  * numerator.
+	newNumerator := anEnteroToMultiply  * numerator.
 	newDenominator := denominator.
 	^Fraccion with: newNumerator over: newDenominator! !
 
-!Fraccion methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:23:25'!
-substractionWithAnInteger: anIntegerMinuend
-	^anIntegerMinuend + self negated ! !
+!Fraccion methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:32:46'!
+substractionWithAnEntero: anEnteroMinuend
+	^anEnteroMinuend + self negated ! !
 
-!Fraccion methodsFor: 'arithmetic operations with integers' stamp: 'AAB 5/11/2020 20:23:09'!
-sumWithAnInteger: anIntegerToAdd
+!Fraccion methodsFor: 'arithmetic operations with Enteros' stamp: 'AAB 5/13/2020 10:32:34'!
+sumWithAnEntero: anEnteroToAdd
 
 	|newNumerator newDenominator |
 
-	newNumerator := anIntegerToAdd  * denominator + numerator.
+	newNumerator := anEnteroToAdd  * denominator + numerator.
 	newDenominator := denominator.
 	^Fraccion with: newNumerator over: newDenominator! !
 

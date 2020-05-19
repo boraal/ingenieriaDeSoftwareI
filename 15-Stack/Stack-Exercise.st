@@ -221,6 +221,83 @@ test04OrderIsMantainedOverManyFinds
 	! !
 
 
+!classDefinition: #NodeOfStack category: #'Stack-Exercise'!
+Object subclass: #NodeOfStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!NodeOfStack methodsFor: 'as yet unclassified' stamp: 'AA 5/18/2020 20:59:08'!
+isEmpty
+	self subclassResponsibility ! !
+
+!NodeOfStack methodsFor: 'as yet unclassified' stamp: 'AA 5/18/2020 21:00:54'!
+value
+	self subclassResponsibility ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'NodeOfStack class' category: #'Stack-Exercise'!
+NodeOfStack class
+	instanceVariableNames: ''!
+
+!NodeOfStack class methodsFor: 'as yet unclassified' stamp: 'AA 5/18/2020 21:06:23'!
+stackEmptyErrorDescription
+	
+	^ 'Stack is empty'! !
+
+
+!classDefinition: #EmptyNode category: #'Stack-Exercise'!
+NodeOfStack subclass: #EmptyNode
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!EmptyNode methodsFor: 'value' stamp: 'AA 5/18/2020 21:06:01'!
+value
+	^self error: self class stackEmptyErrorDescription ! !
+
+
+!EmptyNode methodsFor: 'testing' stamp: 'AA 5/16/2020 16:01:12'!
+isEmpty
+	^true! !
+
+
+!classDefinition: #NodeWithElement category: #'Stack-Exercise'!
+NodeOfStack subclass: #NodeWithElement
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!NodeWithElement methodsFor: 'initialization' stamp: 'AA 5/16/2020 17:53:15'!
+initializeWith: aNewStackElement
+	value := aNewStackElement 
+! !
+
+
+!NodeWithElement methodsFor: 'Value' stamp: 'AA 5/18/2020 21:00:34'!
+value
+	^value! !
+
+
+!NodeWithElement methodsFor: 'testing' stamp: 'AA 5/16/2020 15:56:50'!
+isEmpty
+	^false! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'NodeWithElement class' category: #'Stack-Exercise'!
+NodeWithElement class
+	instanceVariableNames: ''!
+
+!NodeWithElement class methodsFor: 'as yet unclassified' stamp: 'AA 5/16/2020 16:38:06'!
+createWith: aNewStackElement
+	^self new initializeWith: aNewStackElement ! !
+
+
 !classDefinition: #OOStack category: #'Stack-Exercise'!
 Object subclass: #OOStack
 	instanceVariableNames: 'stackAsNodeList'
@@ -228,27 +305,27 @@ Object subclass: #OOStack
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'initialization' stamp: 'AA 5/16/2020 17:58:31'!
+!OOStack methodsFor: 'initialization' stamp: 'AA 5/18/2020 21:03:25'!
 initialize
 	stackAsNodeList := OrderedCollection new.
-	stackAsNodeList addLast: NodoEmpty new! !
+	stackAsNodeList addLast: EmptyNode new! !
 
 
-!OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/16/2020 17:55:28'!
+!OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/18/2020 21:02:20'!
 pop
 	|topElement|
-	topElement := stackAsNodeList first top.
+	topElement := stackAsNodeList first value.
 	stackAsNodeList removeFirst.
 	^topElement 
 	 ! !
 
-!OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/16/2020 17:58:21'!
+!OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/18/2020 21:03:42'!
 push: aNewStackElement
-	stackAsNodeList addFirst: (NodoWithElement createWith: aNewStackElement) ! !
+	stackAsNodeList addFirst: (NodeWithElement createWith: aNewStackElement) ! !
 
-!OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/16/2020 17:55:28'!
+!OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/18/2020 21:00:25'!
 top
-	^stackAsNodeList first top! !
+	^stackAsNodeList first value! !
 
 
 !OOStack methodsFor: 'testing' stamp: 'AA 5/16/2020 17:55:27'!
@@ -271,63 +348,6 @@ stackEmptyErrorDescription
 	^ 'Stack is empty'! !
 
 
-!classDefinition: #NodoEmpty category: #'Stack-Exercise'!
-OOStack subclass: #NodoEmpty
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!NodoEmpty methodsFor: 'initialization' stamp: 'AA 5/16/2020 16:51:28'!
-initialize! !
-
-
-!NodoEmpty methodsFor: 'stack basic operations' stamp: 'AA 5/16/2020 15:57:57'!
-top
-	^self error: self class stackEmptyErrorDescription ! !
-
-
-!NodoEmpty methodsFor: 'testing' stamp: 'AA 5/16/2020 16:01:12'!
-isEmpty
-	^true! !
-
-
-!classDefinition: #NodoWithElement category: #'Stack-Exercise'!
-OOStack subclass: #NodoWithElement
-	instanceVariableNames: 'value'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!NodoWithElement methodsFor: 'initialization' stamp: 'AA 5/16/2020 16:53:26'!
-initialize! !
-
-!NodoWithElement methodsFor: 'initialization' stamp: 'AA 5/16/2020 17:53:15'!
-initializeWith: aNewStackElement
-	value := aNewStackElement 
-! !
-
-
-!NodoWithElement methodsFor: 'stack basic operations' stamp: 'AA 5/16/2020 17:54:23'!
-top
-	^value! !
-
-
-!NodoWithElement methodsFor: 'testing' stamp: 'AA 5/16/2020 15:56:50'!
-isEmpty
-	^false! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'NodoWithElement class' category: #'Stack-Exercise'!
-NodoWithElement class
-	instanceVariableNames: ''!
-
-!NodoWithElement class methodsFor: 'as yet unclassified' stamp: 'AA 5/16/2020 16:38:06'!
-createWith: aNewStackElement
-	^self new initializeWith: aNewStackElement ! !
-
-
 !classDefinition: #SentenceFinderByPrefix category: #'Stack-Exercise'!
 Object subclass: #SentenceFinderByPrefix
 	instanceVariableNames: 'stack checkedElementsStack'
@@ -335,11 +355,14 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'find' stamp: 'AA 5/16/2020 19:16:26'!
+!SentenceFinderByPrefix methodsFor: 'find' stamp: 'AA 5/18/2020 20:51:08'!
 findWithPrefix: aPrefix
 	|stringsWithThatPrefix|
 	stringsWithThatPrefix := OrderedCollection new.
 	
+	self prefixIsEmpty: aPrefix.
+
+
 	[(stack isEmpty not)] whileTrue: 
 		[self ifTopHasPrefix: aPrefix addTo: stringsWithThatPrefix.
 		 self moveTopFromStack: stack to: checkedElementsStack.		 
@@ -400,11 +423,21 @@ restoreStack
 stack
  	^stack ! !
 
+
+!SentenceFinderByPrefix methodsFor: 'Prefix is valid' stamp: 'AA 5/18/2020 20:50:10'!
+prefixIsEmpty: aPrefix
+	(aPrefix = '') ifTrue: [^self error: self class prefixCantBeEmpty].
+! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'SentenceFinderByPrefix class' category: #'Stack-Exercise'!
 SentenceFinderByPrefix class
 	instanceVariableNames: ''!
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'AA 5/18/2020 20:48:52'!
+prefixCantBeEmpty
+	^'El prefijo no puede ser vacio.'! !
 
 !SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'AA 5/16/2020 18:08:17'!
 withStack: aOOStack

@@ -220,6 +220,30 @@ test04OrderIsMantainedOverManyFinds
 	
 	! !
 
+!SentenceFinderByPrefixTest methodsFor: 'testing' stamp: 'AAB 5/18/2020 21:04:18'!
+test05findReturnsErrorIfThePrefixIsEmpty
+
+	self
+		should: [self findWithPrefix: '']
+		raise: Error
+		withExceptionDo: [ :anError | self assert: anError messageText equals: SentenceFinderByPrefix prefixCantBeEmpty ].! !
+
+!SentenceFinderByPrefixTest methodsFor: 'testing' stamp: 'AAB 5/18/2020 21:24:38'!
+test06findReturnsNoElementsWhenTheStackIsEmpty
+
+	sentenceFinder := SentenceFinderByPrefix  withStack: OOStack new.
+	
+	self findWithPrefix: 'wind'.
+	self assert: elementsWithPrefix size equals: 0! !
+
+!SentenceFinderByPrefixTest methodsFor: 'testing' stamp: 'AAB 5/19/2020 14:31:02'!
+test07findReturnsErrorIfThePrefixHasSpaces
+
+	self
+		should: [self findWithPrefix: 'prefijo con espacios']
+		raise: Error
+		withExceptionDo: [ :anError | self assert: anError messageText equals: SentenceFinderByPrefix prefixCantHaveSpaces ].! !
+
 
 !classDefinition: #NodeOfStack category: #'Stack-Exercise'!
 Object subclass: #NodeOfStack
@@ -355,13 +379,13 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'find' stamp: 'AA 5/18/2020 20:51:08'!
+!SentenceFinderByPrefix methodsFor: 'find' stamp: 'AAB 5/19/2020 14:24:36'!
 findWithPrefix: aPrefix
 	|stringsWithThatPrefix|
 	stringsWithThatPrefix := OrderedCollection new.
 	
 	self prefixIsEmpty: aPrefix.
-
+	self prefixCantHaveSpaces: aPrefix.
 
 	[(stack isEmpty not)] whileTrue: 
 		[self ifTopHasPrefix: aPrefix addTo: stringsWithThatPrefix.
@@ -424,6 +448,11 @@ stack
  	^stack ! !
 
 
+!SentenceFinderByPrefix methodsFor: 'Prefix is valid' stamp: 'AAB 5/19/2020 14:29:53'!
+prefixCantHaveSpaces: aPrefix
+	(aPrefix includesSubString: ' ') ifTrue: [^ self error: self class prefixCantHaveSpaces ]
+! !
+
 !SentenceFinderByPrefix methodsFor: 'Prefix is valid' stamp: 'AA 5/18/2020 20:50:10'!
 prefixIsEmpty: aPrefix
 	(aPrefix = '') ifTrue: [^self error: self class prefixCantBeEmpty].
@@ -438,6 +467,10 @@ SentenceFinderByPrefix class
 !SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'AA 5/18/2020 20:48:52'!
 prefixCantBeEmpty
 	^'El prefijo no puede ser vacio.'! !
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'AAB 5/19/2020 14:20:44'!
+prefixCantHaveSpaces
+	^'El prefijo no puede contener espacios.'! !
 
 !SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'AA 5/16/2020 18:08:17'!
 withStack: aOOStack

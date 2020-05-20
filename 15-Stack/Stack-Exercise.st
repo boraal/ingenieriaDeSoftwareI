@@ -260,6 +260,16 @@ isEmpty
 value
 	self subclassResponsibility ! !
 
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'NodeOfStack class' category: #'Stack-Exercise'!
+NodeOfStack class
+	instanceVariableNames: ''!
+
+!NodeOfStack class methodsFor: 'initialization' stamp: 'AA 5/20/2020 15:12:44'!
+createWith: anInitializerValue
+	^self new initializeWith: anInitializerValue ! !
+
 
 !classDefinition: #EmptyNode category: #'Stack-Exercise'!
 NodeOfStack subclass: #EmptyNode
@@ -281,16 +291,6 @@ isEmpty
 !EmptyNode methodsFor: 'initialization' stamp: 'AA 5/20/2020 13:38:13'!
 initializeWith: anError
 	error := anError! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'EmptyNode class' category: #'Stack-Exercise'!
-EmptyNode class
-	instanceVariableNames: ''!
-
-!EmptyNode class methodsFor: 'as yet unclassified' stamp: 'AA 5/20/2020 13:41:13'!
-createWith: anError
-	^self new initializeWith: anError ! !
 
 
 !classDefinition: #NodeWithElement category: #'Stack-Exercise'!
@@ -314,16 +314,6 @@ value
 !NodeWithElement methodsFor: 'testing' stamp: 'AA 5/16/2020 15:56:50'!
 isEmpty
 	^false! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'NodeWithElement class' category: #'Stack-Exercise'!
-NodeWithElement class
-	instanceVariableNames: ''!
-
-!NodeWithElement class methodsFor: 'as yet unclassified' stamp: 'AA 5/16/2020 16:38:06'!
-createWith: aNewStackElement
-	^self new initializeWith: aNewStackElement ! !
 
 
 !classDefinition: #OOStack category: #'Stack-Exercise'!

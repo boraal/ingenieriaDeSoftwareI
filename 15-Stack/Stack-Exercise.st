@@ -260,33 +260,37 @@ isEmpty
 value
 	self subclassResponsibility ! !
 
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'NodeOfStack class' category: #'Stack-Exercise'!
-NodeOfStack class
-	instanceVariableNames: ''!
-
-!NodeOfStack class methodsFor: 'as yet unclassified' stamp: 'AA 5/18/2020 21:06:23'!
-stackEmptyErrorDescription
-	
-	^ 'Stack is empty'! !
-
 
 !classDefinition: #EmptyNode category: #'Stack-Exercise'!
 NodeOfStack subclass: #EmptyNode
-	instanceVariableNames: ''
+	instanceVariableNames: 'error'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!EmptyNode methodsFor: 'value' stamp: 'AA 5/18/2020 21:06:01'!
+!EmptyNode methodsFor: 'value' stamp: 'AA 5/20/2020 13:43:43'!
 value
-	^self error: self class stackEmptyErrorDescription ! !
+	^self error: error ! !
 
 
 !EmptyNode methodsFor: 'testing' stamp: 'AA 5/16/2020 16:01:12'!
 isEmpty
 	^true! !
+
+
+!EmptyNode methodsFor: 'initialization' stamp: 'AA 5/20/2020 13:38:13'!
+initializeWith: anError
+	error := anError! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'EmptyNode class' category: #'Stack-Exercise'!
+EmptyNode class
+	instanceVariableNames: ''!
+
+!EmptyNode class methodsFor: 'as yet unclassified' stamp: 'AA 5/20/2020 13:41:13'!
+createWith: anError
+	^self new initializeWith: anError ! !
 
 
 !classDefinition: #NodeWithElement category: #'Stack-Exercise'!
@@ -329,10 +333,10 @@ Object subclass: #OOStack
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'initialization' stamp: 'AA 5/18/2020 21:03:25'!
+!OOStack methodsFor: 'initialization' stamp: 'AA 5/20/2020 13:43:15'!
 initialize
 	stackAsNodeList := OrderedCollection new.
-	stackAsNodeList addLast: EmptyNode new! !
+	stackAsNodeList addLast: (EmptyNode createWith: self class stackEmptyErrorDescription). ! !
 
 
 !OOStack methodsFor: 'stack basic operations' stamp: 'AA 5/18/2020 21:02:20'!

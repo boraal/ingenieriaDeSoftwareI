@@ -321,7 +321,7 @@ Object subclass: #MarsRoverState
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverState methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:12:40'!
+!MarsRoverState methodsFor: 'initialization' stamp: 'AAB 6/7/2020 15:12:40'!
 initializeFor: aMarsRover
 
 	marsRover := aMarsRover! !
@@ -332,17 +332,18 @@ initializeFor: aMarsRover
 MarsRoverState class
 	instanceVariableNames: ''!
 
-!MarsRoverState class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:27:42'!
-canHandle: aCardinalDirection
-	
-	self subclassResponsibility.! !
-
-!MarsRoverState class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:11:44'!
+!MarsRoverState class methodsFor: 'instance creation' stamp: 'AAB 6/7/2020 15:11:44'!
 for: aMarsRover
 
 	^self new initializeFor: aMarsRover! !
 
-!MarsRoverState class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:28:03'!
+
+!MarsRoverState class methodsFor: 'state selection' stamp: 'AAB 6/7/2020 15:27:42'!
+canHandle: aCardinalDirection
+	
+	self subclassResponsibility.! !
+
+!MarsRoverState class methodsFor: 'state selection' stamp: 'AAB 6/7/2020 15:28:03'!
 stateFor: aMarsRover
 
 	^(self subclasses detect: [:aMarsRoverState | aMarsRoverState canHandle: aMarsRover facingTowards ]) for: aMarsRover.! !
@@ -355,25 +356,26 @@ MarsRoverState subclass: #MarsRoverFacingEast
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverFacingEast methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:18:17'!
-backward
-
-	marsRover decreaseX ! !
-
-!MarsRoverFacingEast methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:18:07'!
-forward
-
-	marsRover increaseX ! !
-
-!MarsRoverFacingEast methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:17:49'!
+!MarsRoverFacingEast methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:17:49'!
 rotateLeft
 
 	marsRover north ! !
 
-!MarsRoverFacingEast methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:17:39'!
+!MarsRoverFacingEast methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:17:39'!
 rotateRight
 
 	marsRover south ! !
+
+
+!MarsRoverFacingEast methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:18:17'!
+backward
+
+	marsRover decreaseX ! !
+
+!MarsRoverFacingEast methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:18:07'!
+forward
+
+	marsRover increaseX ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -381,7 +383,7 @@ rotateRight
 MarsRoverFacingEast class
 	instanceVariableNames: ''!
 
-!MarsRoverFacingEast class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:15:17'!
+!MarsRoverFacingEast class methodsFor: 'state selection' stamp: 'AAB 6/7/2020 15:15:17'!
 canHandle: aCardinalDirection
 
 	^aCardinalDirection = 'E'.! !
@@ -394,25 +396,26 @@ MarsRoverState subclass: #MarsRoverFacingNorth
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverFacingNorth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:45'!
-backward
-
-	marsRover decreaseY ! !
-
-!MarsRoverFacingNorth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:51'!
-forward
-
-	marsRover increaseY ! !
-
-!MarsRoverFacingNorth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:57'!
+!MarsRoverFacingNorth methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:21:57'!
 rotateLeft
 
 	marsRover west ! !
 
-!MarsRoverFacingNorth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:22:11'!
+!MarsRoverFacingNorth methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:22:11'!
 rotateRight
 
 	marsRover east ! !
+
+
+!MarsRoverFacingNorth methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:21:45'!
+backward
+
+	marsRover decreaseY ! !
+
+!MarsRoverFacingNorth methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:21:51'!
+forward
+
+	marsRover increaseY ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -420,7 +423,7 @@ rotateRight
 MarsRoverFacingNorth class
 	instanceVariableNames: ''!
 
-!MarsRoverFacingNorth class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:38'!
+!MarsRoverFacingNorth class methodsFor: 'state selection' stamp: 'AAB 6/7/2020 15:21:38'!
 canHandle: aCardinalDirection
 
 	^aCardinalDirection = 'N'.! !
@@ -433,25 +436,26 @@ MarsRoverState subclass: #MarsRoverFacingSouth
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverFacingSouth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:22:31'!
-backward
-
-	marsRover increaseY ! !
-
-!MarsRoverFacingSouth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:22:36'!
-forward
-
-	marsRover decreaseY ! !
-
-!MarsRoverFacingSouth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:22:41'!
+!MarsRoverFacingSouth methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:22:41'!
 rotateLeft
 
 	marsRover east ! !
 
-!MarsRoverFacingSouth methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:22:50'!
+!MarsRoverFacingSouth methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:22:50'!
 rotateRight
 
 	marsRover west ! !
+
+
+!MarsRoverFacingSouth methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:22:31'!
+backward
+
+	marsRover increaseY ! !
+
+!MarsRoverFacingSouth methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:22:36'!
+forward
+
+	marsRover decreaseY ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -459,7 +463,7 @@ rotateRight
 MarsRoverFacingSouth class
 	instanceVariableNames: ''!
 
-!MarsRoverFacingSouth class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:22:25'!
+!MarsRoverFacingSouth class methodsFor: 'state selection' stamp: 'AAB 6/7/2020 15:22:25'!
 canHandle: aCardinalDirection
 
 	^aCardinalDirection = 'S'.! !
@@ -472,25 +476,26 @@ MarsRoverState subclass: #MarsRoverFacingWest
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverFacingWest methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:09'!
-backward
-
-	marsRover increaseX ! !
-
-!MarsRoverFacingWest methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:13'!
-forward
-
-	marsRover decreaseX ! !
-
-!MarsRoverFacingWest methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:18'!
+!MarsRoverFacingWest methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:21:18'!
 rotateLeft
 
 	marsRover south ! !
 
-!MarsRoverFacingWest methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:21:22'!
+!MarsRoverFacingWest methodsFor: 'change direction' stamp: 'AAB 6/7/2020 15:21:22'!
 rotateRight
 
 	marsRover north ! !
+
+
+!MarsRoverFacingWest methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:21:09'!
+backward
+
+	marsRover increaseX ! !
+
+!MarsRoverFacingWest methodsFor: 'change position' stamp: 'AAB 6/7/2020 15:21:13'!
+forward
+
+	marsRover decreaseX ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -498,7 +503,7 @@ rotateRight
 MarsRoverFacingWest class
 	instanceVariableNames: ''!
 
-!MarsRoverFacingWest class methodsFor: 'as yet unclassified' stamp: 'AAB 6/7/2020 15:29:17'!
+!MarsRoverFacingWest class methodsFor: 'state selection' stamp: 'AAB 6/7/2020 15:29:17'!
 canHandle: aCardinalDirection
 
 	^aCardinalDirection = 'O'.! !

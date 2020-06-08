@@ -309,7 +309,7 @@ west
 MarsRover class
 	instanceVariableNames: ''!
 
-!MarsRover class methodsFor: 'as yet unclassified' stamp: 'AAB 6/4/2020 21:06:01'!
+!MarsRover class methodsFor: 'instance creation' stamp: 'AAB 6/4/2020 21:06:01'!
 createAtCoordinates: aPoint facing: aString 
 	^ self new initializeWithCoordinate: aPoint facing: aString.! !
 

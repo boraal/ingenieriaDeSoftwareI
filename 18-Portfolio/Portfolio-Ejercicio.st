@@ -5,16 +5,16 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 15:15:49'!
-test01
+!PortfolioTest methodsFor: 'balance' stamp: 'AA 6/21/2020 16:22:27'!
+test01_balance_TheBalanceOfANewPortfolioIsZero
 	|portfolio|
 	
 	portfolio := Portfolio new.
 	
 	self assert: 0 equals: portfolio balance.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 15:17:27'!
-test02
+!PortfolioTest methodsFor: 'balance' stamp: 'AA 6/21/2020 16:22:31'!
+test02_balance_TheBalanceOfAPortfolioWithAnAccountWithouthTransactionsIsZero
 	|portfolio receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -22,8 +22,8 @@ test02
 	portfolio add: receptiveAccount.
 	self assert: 0 equals: portfolio balance.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 15:23:36'!
-test03
+!PortfolioTest methodsFor: 'balance' stamp: 'AA 6/21/2020 16:22:36'!
+test03_balance_TheBalanceOfAPortfolioWithOneAccountIsAccountsBalance
 	|portfolio receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -32,8 +32,8 @@ test03
 	portfolio add: receptiveAccount.
 	self assert: 100 equals: portfolio balance .! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 15:28:22'!
-test04
+!PortfolioTest methodsFor: 'balance' stamp: 'AA 6/21/2020 16:22:41'!
+test04_balance_TheBalanceOfAPortfolioWithMultipleAccountsIsTheSumOfTheAccountsBalance
 	|portfolio receptiveAccount receptiveAccount2|
 	
 	portfolio := Portfolio new.
@@ -45,8 +45,8 @@ test04
 	portfolio add: receptiveAccount2.
 	self assert: 200 equals: (portfolio balance).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 15:34:10'!
-test05
+!PortfolioTest methodsFor: 'balance' stamp: 'AA 6/21/2020 16:22:45'!
+test05_balance_ThebalanceOfAPortfolioWithAPortfolioIsTheBalanceOfThePortfolio
 	|portfolio  portfolio2 receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -58,8 +58,8 @@ test05
 
 	self assert: 100 equals: (portfolio balance).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 15:51:36'!
-test06
+!PortfolioTest methodsFor: 'balance' stamp: 'AA 6/21/2020 16:22:49'!
+test06_balance_TheBalanceOfAPortfolioUpdatesWhenNewTransactionsAreDoneIsTheirAccounts
 	|portfolio receptiveAccount|
 	portfolio := Portfolio new.
 	receptiveAccount := ReceptiveAccount new.
@@ -68,8 +68,8 @@ test06
 	self assert: 100 equals: portfolio balance .! !
 
 
-!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/20/2020 16:20:58'!
-test07
+!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/21/2020 16:24:40'!
+test01_Register_AnEmptyPortfolioDoesntRegisterTransactionsFromAccounts
 	|portfolio receptiveAccount deposit|
 	
 	portfolio := Portfolio new.
@@ -78,8 +78,8 @@ test07
 	self deny: (portfolio hasRegistered: deposit ).
 	! !
 
-!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/20/2020 16:23:04'!
-test08
+!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/21/2020 16:23:42'!
+test02_Register_APortfolioRegisterTransactionsInAccountInsideIt
 	|portfolio receptiveAccount deposit|
 	
 	portfolio := Portfolio new.
@@ -89,8 +89,8 @@ test08
 	self assert: (portfolio hasRegistered: deposit ).
 	! !
 
-!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/20/2020 16:26:13'!
-test09
+!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/21/2020 16:24:46'!
+test03_Register_APortfolioDoesntRegisterTransactionsFromAccountsThatAreNotInPortfolio
 	|portfolio receptiveAccountWithDeposit deposit receptiveAccountWithoutDeposit|
 	
 	portfolio := Portfolio new.
@@ -101,8 +101,8 @@ test09
 	self deny: (portfolio hasRegistered: deposit ).
 	! !
 
-!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/20/2020 16:32:14'!
-test10
+!PortfolioTest methodsFor: 'register account ' stamp: 'AA 6/21/2020 16:25:40'!
+test04_Register_APortfolioRegistersAllTransactionsInItsAccounts
 	|portfolio receptiveAccountWithDeposit deposit receptiveAccountWithoutDeposit|
 	
 	portfolio := Portfolio new.
@@ -115,14 +115,14 @@ test10
 	! !
 
 
-!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/20/2020 16:34:40'!
-test11
+!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/21/2020 16:26:32'!
+test01_Transaction_ANewPortfolioDoesntHaveTransactions
 	|portfolio |
 	portfolio := Portfolio new.
 	self assert: 0 equals: portfolio transactions size.! !
 
-!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/20/2020 16:41:53'!
-test12
+!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/21/2020 16:26:58'!
+test02_Transaction_APortfoliowithOneAccountOneTransactionHasOneTransaction
 	|portfolio receptiveAccount|
 	portfolio := Portfolio new.
 	receptiveAccount := ReceptiveAccount new.
@@ -130,17 +130,17 @@ test12
 	portfolio add: receptiveAccount.
 	self assert: 1 equals: portfolio transactions size.! !
 
-!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/20/2020 16:55:59'!
-test13
+!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/21/2020 16:27:54'!
+test03_Transaction_APortofolioWithOneAccountWithOneTransactionHasThatTransaction
 	|portfolio receptiveAccount deposit|
 	portfolio := Portfolio new.
 	receptiveAccount := ReceptiveAccount new.
 	deposit := Deposit register: 100 on: receptiveAccount.
 	portfolio add: receptiveAccount.
-	self assert: deposit equals: (portfolio transactions at:1).! !
+	self assert: (portfolio transactions includes:  deposit).! !
 
-!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/20/2020 16:55:36'!
-test14
+!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/21/2020 16:29:05'!
+test04_Transaction_APortfolioHasAllTransactionsInAPortfolioInsideIt
 	|portfolio portfolio2 receptiveAccount deposit|
 	portfolio := Portfolio new.
 	portfolio2 := Portfolio new.
@@ -148,11 +148,32 @@ test14
 	deposit := Deposit register: 100 on: receptiveAccount.
 	portfolio2 add: receptiveAccount.
 	portfolio add: portfolio2 .
-	self assert: deposit equals: (portfolio transactions at: 1).! !
+	self assert: (portfolio transactions includes: deposit).! !
+
+!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/21/2020 16:30:13'!
+test05_Transaction_APortfolioUpdatesItsTransactionsAfterATransactionIsDoneInOneOfItsAccounts
+	|portfolio receptiveAccount deposit|
+	portfolio := Portfolio new.
+	receptiveAccount := ReceptiveAccount new.
+	portfolio add: receptiveAccount.
+	deposit := Deposit register: 100 on: receptiveAccount.
+	self assert: (portfolio transactions includes:  deposit).! !
+
+!PortfolioTest methodsFor: 'transactions' stamp: 'AA 6/21/2020 16:31:06'!
+test06_Transaction_APortfolioRegistersMoreThanOneTransactionFromTheSameAccount
+	|portfolio receptiveAccount deposit deposit2|
+	portfolio := Portfolio new.
+	receptiveAccount := ReceptiveAccount new.
+	portfolio add: receptiveAccount.
+	deposit := Deposit register: 100 on: receptiveAccount.
+	deposit2 := Deposit register: 100 on: receptiveAccount.
+
+	self assert: (portfolio transactions includes:  deposit).
+	self assert: (portfolio transactions includes:  deposit2).! !
 
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:35:05'!
-test15
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:32:58'!
+test01_Add_APortfolioCantAddAnAlreadyAddedAccount
 	|portfolio receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -164,8 +185,8 @@ test15
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:35:05'!
-test16
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:33:49'!
+test02_Add_APortfolioCantAddAnAccountThatAlreadyIsInAPortfolioInsideIt
 	|portfolio  portfolio2 receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -178,8 +199,8 @@ test16
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:35:05'!
-test17
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:35:48'!
+test03_Add_APortfolioCantAddAnAccountThatIsInAPortfolioPortfolios
 	|portfolio  portfolio2 portfolio3 receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -195,8 +216,8 @@ test17
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:35:05'!
-test18
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:36:23'!
+test04_Add_APortfolioCantAddSamePortfolioMoreThanOnce
 	|portfolio  portfolio2|
 	
 	portfolio := Portfolio new.
@@ -208,8 +229,8 @@ test18
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:35:43'!
-test19
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:37:09'!
+test05_Add_APortfolioCantAddAPortfolioInWhichItIsIncluded
 	|portfolio portfolio2|
 	
 	portfolio := Portfolio new.
@@ -224,8 +245,8 @@ test19
 			:anError | 
 			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:44:31'!
-test20
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:38:03'!
+test06_Add_APortfolioThatIsInsideMultiplePortfoliosCantAddAnyOfThosePortfolios
 	|portfolio portfolio2 portfolio3|
 	
 	portfolio := Portfolio new.
@@ -241,8 +262,8 @@ test20
 			:anError | 
 			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 17:49:26'!
-test21
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:40:41'!
+test07_Add_APortfolioCantAddAPortfolioThatIsIncludedInAPortfolioThatIncludesItsSelf
 	|portfolio portfolio2 portfolio3|
 	
 	portfolio := Portfolio new.
@@ -258,8 +279,8 @@ test21
 			:anError | 
 			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 18:02:59'!
-test22
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:41:09'!
+test08_Add_APortfolioCantAddItSelf
 	|portfolio|
 	
 	portfolio := Portfolio new.
@@ -272,8 +293,8 @@ test22
 			:anError | 
 			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 18:05:51'!
-test23
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:41:55'!
+test09_Add_APortfolioCantAddAnAccountThatIsIncludedInAPortfolioThatIncludesItsSelf
 	|portfolio portfolio2 receptiveAccount|
 	
 	portfolio := Portfolio new.
@@ -289,8 +310,8 @@ test23
 			:anError | 
 			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
 
-!PortfolioTest methodsFor: 'repeated accounts and portfolios' stamp: 'AA 6/20/2020 18:14:03'!
-test24
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:43:02'!
+test10_Add_APortfolioCantAddAPortfolioThatIncludesOneOfItsPortfolios
 	|portfolio portfolio2 portfolio3|
 	
 	portfolio := Portfolio new.
@@ -300,6 +321,63 @@ test24
 	portfolio2 add: portfolio3 .
 
 	self should: [portfolio add:portfolio2  ]
+		raise: Error 
+		withExceptionDo: 
+		[
+			:anError | 
+			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
+
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:44:25'!
+test11_Add_APortfolioCantAddAPortfolioThatIncludesOneOfTheAccountsIncludedInOneOfThePortfoliosInItsSelf
+	|portfolio portfolio2 portfolio3 receptiveAccount  |
+	
+	portfolio := Portfolio new.
+	portfolio2 := Portfolio new.
+	portfolio3 := Portfolio new.
+	receptiveAccount := ReceptiveAccount new.
+	portfolio add: portfolio2 .
+	portfolio2 add: receptiveAccount .
+	portfolio3 add: receptiveAccount .
+
+	self should: [portfolio add: portfolio3 ]
+		raise: Error 
+		withExceptionDo: 
+		[
+			:anError | 
+			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
+
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:45:03'!
+test12_Add_APortfolioCantAddAPortfolioThatHasAnAccountInCommon
+	|portfolio portfolio2 portfolio3 receptiveAccount  |
+	
+	portfolio := Portfolio new.
+	portfolio2 := Portfolio new.
+	portfolio3 := Portfolio new.
+	receptiveAccount := ReceptiveAccount new.
+	portfolio add: portfolio2 .
+	portfolio2 add: receptiveAccount .
+	portfolio3 add: receptiveAccount .
+
+	self should: [portfolio3 add: portfolio ]
+		raise: Error 
+		withExceptionDo: 
+		[
+			:anError | 
+			self assert: anError messageText equals: Portfolio cantRepeatePortfoliosAndAccountsErrorDescription]! !
+
+!PortfolioTest methodsFor: 'add' stamp: 'AA 6/21/2020 16:46:04'!
+test13_Add_APortfolioCantAddAPortfolioThatHasAPortfolioThatIncludesItSelf
+	|portfolio portfolio2 portfolio3  |
+	
+	portfolio := Portfolio new.
+	portfolio2 := Portfolio new.
+	portfolio3 := Portfolio new.
+
+	portfolio add: portfolio2 .
+	portfolio2 add: portfolio3 .
+	
+
+	self should: [portfolio3 add: portfolio ]
 		raise: Error 
 		withExceptionDo: 
 		[
@@ -501,70 +579,63 @@ for: aValue
 
 !classDefinition: #Portfolio category: #'Portfolio-Ejercicio'!
 Object subclass: #Portfolio
-	instanceVariableNames: 'balance aSetOfAccount transactions parents'
+	instanceVariableNames: 'aSetOfAccount portfoliosInWhichItIsIncluded'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!Portfolio methodsFor: 'register' stamp: 'AA 6/20/2020 16:31:12'!
+!Portfolio methodsFor: 'transactions registered' stamp: 'AA 6/20/2020 15:44:46'!
+balance
+	^aSetOfAccount sum: [:anAccountOrPortfolio | anAccountOrPortfolio  balance] ifEmpty: [ 0 ]! !
+
+!Portfolio methodsFor: 'transactions registered' stamp: 'AA 6/20/2020 16:31:12'!
 hasRegistered: aTransaction 
 	^aSetOfAccount inject: false into: [:transactionIsInPorfolio :accounts | transactionIsInPorfolio or: (accounts hasRegistered: aTransaction)]! !
 
+!Portfolio methodsFor: 'transactions registered' stamp: 'AA 6/21/2020 15:53:12'!
+transactions
+	|transactionIsInPorfolio|
+	transactionIsInPorfolio := OrderedCollection new.
+	aSetOfAccount do: [:accounts | transactionIsInPorfolio addAllLast: (accounts transactions )].
+	
+	^transactionIsInPorfolio .! !
 
-!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/20/2020 18:33:07'!
+
+!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/21/2020 16:53:07'!
 add: aPortfolioOrAccount
-	self isAValidAccountOrPortfolioForPortfolio: aPortfolioOrAccount.
-	aPortfolioOrAccount parentAssign: self.
-	(aPortfolioOrAccount transactions) do: [:aTransaction | transactions add: aTransaction].	
+	self errorIfThereAreRepeteadedAccountsOrPortfoliosWith: aPortfolioOrAccount.
+	aPortfolioOrAccount addPortfolioInWhichItIsIncluded: self.	
 	aSetOfAccount add: aPortfolioOrAccount .
 	
 	! !
 
-!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/20/2020 18:40:45'!
-includedAccounts
-	
-	|collection|
-	collection := OrderedCollection new.
-	collection add: self.
-	 aSetOfAccount do: 
-	[:anAccountOrPortfolioInPortfolio |
-		(anAccountOrPortfolioInPortfolio includedAccounts) do: [:account | collection add: account ].
-	].
+!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/21/2020 16:53:07'!
+addPortfolioInWhichItIsIncluded: aPortfolio 
+	portfoliosInWhichItIsIncluded add: aPortfolio.! !
 
-	^collection.
-		! !
+!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/21/2020 16:52:35'!
+errorIfAccountOrPortfolios: includedAccountsAndPortfolios areRepeatedIn: aPortfolioOrAccount
 
-!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/20/2020 19:02:54'!
-isAValidAccountOrPortfolioForPortfolio: aPortfolioOrAccount
-	|includedAccounts|
-	self = aPortfolioOrAccount ifTrue: [self error: self class cantRepeatePortfoliosAndAccountsErrorDescription].
-	
-	"included accounts parents"
-	self includedAccounts .
-	includedAccounts  := self includedAccounts.
-	aPortfolioOrAccount includedAccounts do: 
-	[
-		:nonIncludedAccount |
-		(includedAccounts includes: nonIncludedAccount)  ifTrue:
-		[
-			self error: self class cantRepeatePortfoliosAndAccountsErrorDescription
-		]
-				
-	].
-
-	parents do:
-	[
-		:parent |
-		includedAccounts  := parent includedAccounts.
-		aPortfolioOrAccount includedAccounts do: 
+	^ aPortfolioOrAccount includedAccountsAndPortfolios do: 
 		[
 			:nonIncludedAccount |
-			(includedAccounts includes: nonIncludedAccount)  ifTrue:
+			(includedAccountsAndPortfolios includes: nonIncludedAccount)  ifTrue:
 			[
 				self error: self class cantRepeatePortfoliosAndAccountsErrorDescription
 			]
 					
-		].
+		]! !
+
+!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/21/2020 16:52:57'!
+errorIfThereAreRepeteadedAccountsOrPortfoliosWith: aPortfolioOrAccount
+	|includedAccountsAndPortfolios|
+	includedAccountsAndPortfolios  := self includedAccountsAndPortfolios.
+	self errorIfAccountOrPortfolios: includedAccountsAndPortfolios areRepeatedIn: aPortfolioOrAccount.
+	portfoliosInWhichItIsIncluded do:
+	[
+		:parent |
+		includedAccountsAndPortfolios  := parent includedAccountsAndPortfolios.
+		self errorIfAccountOrPortfolios: includedAccountsAndPortfolios areRepeatedIn: aPortfolioOrAccount.
 	]
 	
 		
@@ -575,32 +646,32 @@ isAValidAccountOrPortfolioForPortfolio: aPortfolioOrAccount
 		
 ! !
 
-!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/20/2020 17:45:54'!
-parentAssign: aPortfolio 
-	parents add: aPortfolio.! !
+!Portfolio methodsFor: 'add acount or portfolio' stamp: 'AA 6/21/2020 16:50:28'!
+includedAccountsAndPortfolios
+	
+	|collection|
+	collection := OrderedCollection new.
+	collection add: self.
+	 aSetOfAccount do: 
+	[:anAccountOrPortfolioInPortfolio |
+		(anAccountOrPortfolioInPortfolio includedAccountsAndPortfolios) do: [:account | collection add: account ].
+	].
+
+	^collection.
+		! !
 
 
-!Portfolio methodsFor: 'values' stamp: 'AA 6/20/2020 17:05:23'!
-accounts
-	^aSetOfAccount 
+!Portfolio methodsFor: 'initialization' stamp: 'AA 6/21/2020 16:46:32'!
+initialize
+	aSetOfAccount := OrderedCollection new.
+	portfoliosInWhichItIsIncluded := OrderedCollection new.
+
 ! !
 
-!Portfolio methodsFor: 'values' stamp: 'AA 6/20/2020 15:44:46'!
-balance
-	^aSetOfAccount sum: [:anAccountOrPortfolio | anAccountOrPortfolio  balance] ifEmpty: [ 0 ]! !
 
-!Portfolio methodsFor: 'values' stamp: 'AA 6/20/2020 16:41:27'!
-transactions
-	^transactions .! !
-
-
-!Portfolio methodsFor: 'initialization' stamp: 'AA 6/20/2020 17:45:46'!
-initialize
-	balance := 0.
-	aSetOfAccount := OrderedCollection new.
-	transactions := OrderedCollection new.
-	parents := OrderedCollection new.
-
+!Portfolio methodsFor: 'testing' stamp: 'AA 6/20/2020 17:05:23'!
+accounts
+	^aSetOfAccount 
 ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -616,16 +687,16 @@ cantRepeatePortfoliosAndAccountsErrorDescription
 
 !classDefinition: #ReceptiveAccount category: #'Portfolio-Ejercicio'!
 Object subclass: #ReceptiveAccount
-	instanceVariableNames: 'transactions parents'
+	instanceVariableNames: 'transactions portfoliosInWhichItIsIncluded'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!ReceptiveAccount methodsFor: 'initialization' stamp: 'AA 6/20/2020 18:51:31'!
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'AA 6/21/2020 16:47:25'!
 initialize
 
 	transactions := OrderedCollection new.
-	parents := OrderedCollection new.! !
+	portfoliosInWhichItIsIncluded := OrderedCollection new.! !
 
 
 !ReceptiveAccount methodsFor: 'transactions' stamp: 'AA 6/20/2020 14:56:19'!
@@ -645,10 +716,6 @@ balance
 
 	^transactions sum: [ :aTransaction | aTransaction balanceChange ] ifEmpty: [ 0 ]! !
 
-!ReceptiveAccount methodsFor: 'balance' stamp: 'AA 6/20/2020 18:14:47'!
-parentAssign: aPortfolio 
-	parents add: aPortfolio.! !
-
 
 !ReceptiveAccount methodsFor: 'testing' stamp: 'AA 6/20/2020 14:56:36'!
 hasRegistered: aTransaction
@@ -657,8 +724,12 @@ hasRegistered: aTransaction
 ! !
 
 
-!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'AA 6/20/2020 18:50:11'!
-includedAccounts
+!ReceptiveAccount methodsFor: 'portfolio ' stamp: 'AA 6/21/2020 16:53:07'!
+addPortfolioInWhichItIsIncluded: aPortfolio 
+	portfoliosInWhichItIsIncluded add: aPortfolio.! !
+
+!ReceptiveAccount methodsFor: 'portfolio ' stamp: 'AA 6/21/2020 16:50:27'!
+includedAccountsAndPortfolios
 	|collection|
 	collection  := OrderedCollection new.
 	collection add: self.

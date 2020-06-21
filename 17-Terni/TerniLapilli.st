@@ -5,528 +5,599 @@ TestCase subclass: #TerniLapilliTests
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:37:39'!
-test23CantMoveTokensBeforeAllArePlacedInBoard
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:37:41'!
+test23CantMoveTokensBeforeAllArePlaced
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
+	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@2).
+	
+	self should: [terniLapilli moveTokenAt: (1@1) to: (2@2).]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli cantMoveTokenBeforeSixTurnsErrorDescription]
+
+
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:38:04'!
+test24CantMoveOtherPlayerTokens
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (1@1).
 	terniLapilli placeTokenAt: (1@3).
-	self should: [terniLapilli moveTokenFrom: (1@1) to: (1@2).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli cantMoveBeforeSixTurnsErrorDescription]
-	
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
 
-	
-	
-	
+	self should: [terniLapilli moveTokenAt: (2@3) to: (3@3)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli cantMoveOtherPlayerTokenErrorDescription]
+
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:38:00'!
-test24CantMoveOtherPlayersTokens
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:38:26'!
+test25CantMoveTokenToTheSamePosition
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	self should: [terniLapilli moveTokenFrom: (2@3) to: (3@3).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli cantMoveOtherPlayerTokenErrorDescription]
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
 
-	
-	
-	
+	self should: [terniLapilli moveTokenAt: (2@2) to: (2@2)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:38:25'!
-test25CantMoveTokenToSamePosition
-	| terniLapilli |
-	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	self should: [terniLapilli moveTokenFrom: (2@2) to: (2@2).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli invalidMovementErrorDescription].
-	
-
-	
-	
-	
-
-			! !
-
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:38:40'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:38:43'!
 test26CantMoveTokenOverAnotherToken
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	self should: [terniLapilli moveTokenFrom: (2@2) to: (2@3).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli tokensOverlapErrorDescription ].
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
 
-	
-	
-	
+	self should: [terniLapilli moveTokenAt: (2@2) to: (2@3)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOverlapErrorDescription ]
+
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:39:24'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:39:02'!
 test27CantMoveTokenOutsideTheBoard
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	self should: [terniLapilli moveTokenFrom: (2@2) to: (2@3333).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription ].
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
 
-	
-	
-	
+	self should: [terniLapilli moveTokenAt: (2@2) to: (2@4)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription ]
+
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:39:19'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:39:23'!
 test28CantMoveTokenFromOutsideTheBoard
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	self should: [terniLapilli moveTokenFrom: (2@4) to: (3@3).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription ].
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
 
-	
-	
-	
+	self should: [terniLapilli moveTokenAt: (2@4) to: (3@3)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription ]
+
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:40:17'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:40:18'!
 test29CantMoveTokenAfterThereIsAWinner
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (2@1).
-	
 	terniLapilli placeTokenAt: (1@1).
-	
-	terniLapilli placeTokenAt: (2@3).
-	
-	terniLapilli placeTokenAt: (2@2).
-	
 	terniLapilli placeTokenAt: (1@2).
-	
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@3).
 	terniLapilli placeTokenAt: (3@3).
 
-	self should: [terniLapilli moveTokenFrom: (2@3) to: (1@3).]
+	self should: [terniLapilli moveTokenAt: (1@3) to: (2@3)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli gameFinishErrorDescription]
-	
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli gameFinishedErrorDescription]
+! !
 
-	
-	
-	
-
-			! !
-
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:40:38'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:40:42'!
 test30WhenXMovesTokenItIsOTurn
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	terniLapilli moveTokenFrom: (2@2) to: (3@1).
-	self assert: #O equals: terniLapilli actualPlayer 
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli moveTokenAt: (2@2) to: (3@1).
+	
+	self assert: #O equals: terniLapilli actualPlayer.
 
-	
-	
-	
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:40:56'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:41:01'!
 test31WhenOMovesTokenItIsXTurn
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	terniLapilli moveTokenFrom: (2@2) to: (3@1).
-	terniLapilli moveTokenFrom: (1@3) to: (2@2).
-	self assert: #X equals: terniLapilli actualPlayer 
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli moveTokenAt: (2@2) to: (3@1).
+	terniLapilli moveTokenAt: (2@3) to: (3@3).
+	
+	self assert: #X equals: terniLapilli actualPlayer.
 
-	
-	
-	
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:41:45'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:41:51'!
 test32AfterMovingTokenThereIsNoTokenInPreviousPosition
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	terniLapilli moveTokenFrom: (2@2) to: (3@1).
-	self assert: (terniLapilli tokenTypeAt: (2@2)) equals: (false)
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli moveTokenAt: (2@2) to: (3@1).
 	
+	self assert: (terniLapilli tokenTypeAt: (2@2)) equals: false.
 
-	
-	
-	
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:42:05'!
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:42:17'!
 test33AfterMovingTokenItIsInTheNewPosition
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
-	terniLapilli moveTokenFrom: (2@2) to: (3@1).
-	self assert: (terniLapilli tokenTypeAt: (3@1)) equals: (#X)
 	
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli moveTokenAt: (2@2) to: (3@1).
 	
+	self assert: (terniLapilli tokenTypeAt: (3@1)) equals: #X.
 
-	
-	
-	
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:43:58'!
-test34CantMoveTokensFrom11To31
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:44:16'!
+test34CantMoveTokenFrom11To31
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
 	
-	
-	self should: [terniLapilli moveTokenFrom: (1@1) to: (3@1).]
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+
+	self should: [terniLapilli moveTokenAt: (1@1) to: (3@1)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
-	
-
-	
-	
-	
-
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:44:12'!
-test35CantMoveTokensFrom11To33
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:44:27'!
+test35CantMoveTokenFrom11To33
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(1@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
 	
-	
-	self should: [terniLapilli moveTokenFrom: (1@1) to: (3@3).]
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+
+	self should: [terniLapilli moveTokenAt: (1@1) to: (3@3)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
-	
-
-	
-	
-	
-
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:44:24'!
-test36CantMoveTokensFrom11To13
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:44:33'!
+test36CantMoveTokenFrom11To13
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(3@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
 	
-	
-	self should: [terniLapilli moveTokenFrom: (1@1) to: (1@3).]
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+
+	self should: [terniLapilli moveTokenAt: (1@1) to: (1@3)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
-	
-
-	
-	
-	
-
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:44:32'!
-test37CantMoveTokensFrom11To32
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:44:40'!
+test37CantMoveTokenFrom11To32
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(3@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(2@3).
 	
-	
-	self should: [terniLapilli moveTokenFrom: (1@1) to: (3@2).]
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+
+	self should: [terniLapilli moveTokenAt: (1@1) to: (3@2)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
-	
-
-	
-	
-	
-
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
 			! !
 
-!TerniLapilliTests methodsFor: 'test movement' stamp: 'AA 6/14/2020 18:44:41'!
-test38CantMoveTokensFrom11To23
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/14/2020 18:44:45'!
+test38CantMoveTokenFrom11To23
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).	
-	terniLapilli placeTokenAt:(3@3).
-	terniLapilli placeTokenAt: (1@2).	
-	terniLapilli placeTokenAt:(2@1).
-	terniLapilli placeTokenAt: (2@2).	
-	terniLapilli placeTokenAt:(3@1).
 	
-	
-	self should: [terniLapilli moveTokenFrom: (1@1) to: (2@3).]
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (3@1).
+
+	self should: [terniLapilli moveTokenAt: (1@1) to: (2@3)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
-	
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
 
-	
-	
-	
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:17:15'!
+test39CantMoveTokenFrom21To32
 
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (3@1).
+
+	self should: [terniLapilli moveTokenAt: (2@1) to: (3@2)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:20:41'!
+test40CantMoveTokenFrom21To12
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@2).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (3@1).
+
+	self should: [terniLapilli moveTokenAt: (2@1) to: (1@2)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:22:55'!
+test41CantMoveTokenFrom12To21
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (3@2).
+
+	self should: [terniLapilli moveTokenAt: (1@2) to: (2@1)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:24:25'!
+test42CantMoveTokenFrom12To23
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (3@2).
+
+	self should: [terniLapilli moveTokenAt: (1@2) to: (2@3)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:26:15'!
+test43CantMoveTokenFrom23To12
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (3@2).
+
+	self should: [terniLapilli moveTokenAt: (2@3) to: (1@2)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:26:37'!
+test44CantMoveTokenFrom23To32
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@2).
+
+	self should: [terniLapilli moveTokenAt: (2@3) to: (3@2)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:27:40'!
+test45CantMoveTokenFrom32To21
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (3@2).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@2).
+
+	self should: [terniLapilli moveTokenAt: (3@2) to: (2@1)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
+			! !
+
+!TerniLapilliTests methodsFor: 'test movement' stamp: 'AAB 6/15/2020 20:28:27'!
+test46CantMoveTokenFrom32To23
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (3@2).
+	terniLapilli placeTokenAt: (3@3).
+	terniLapilli placeTokenAt: (3@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@2).
+
+	self should: [terniLapilli moveTokenAt: (3@2) to: (2@3)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli invalidMovementErrorDescription ]
 			! !
 
 
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:33:48'!
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:33:56'!
 test13PlayerXWinsOnRowOne
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (1@1).
 	terniLapilli placeTokenAt: (2@1).
 	terniLapilli placeTokenAt: (1@2).
 	terniLapilli placeTokenAt: (2@2).
 	terniLapilli placeTokenAt: (1@3).
-	self assert: terniLapilli winner equals: #X.
 
-	
-	
-	
+	self assert: (terniLapilli winner) equals: #X.
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:34:48'!
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:34:10'!
 test14PlayerXWinsOnRowTwo
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (2@1).
-	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (3@1).
 	terniLapilli placeTokenAt: (2@2).
-	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (3@2).
 	terniLapilli placeTokenAt: (2@3).
-	self assert: terniLapilli winner equals: #X.
 
-	
-	
-	
+	self assert: (terniLapilli winner) equals: #X.
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:35:05'!
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:34:18'!
 test15PlayerXWinsOnRowThree
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (3@1).
-	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@1).
 	terniLapilli placeTokenAt: (3@2).
-	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@2).
 	terniLapilli placeTokenAt: (3@3).
-	self assert: terniLapilli winner equals: #X.
 
-	
-	
-	
+	self assert: (terniLapilli winner) equals: #X.
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:34:44'!
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:34:41'!
 test16PlayerXWinsOnColumnOne
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (1@1).
-	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@2).
 	terniLapilli placeTokenAt: (2@1).
-	terniLapilli placeTokenAt: (3@2).
+	terniLapilli placeTokenAt: (2@2).
 	terniLapilli placeTokenAt: (3@1).
-	self assert: terniLapilli winner equals: #X.
 
-	
-	
-	
+	self assert: (terniLapilli winner) equals: #X.
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:35:32'!
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:34:51'!
 test17PlayerXWinsOnColumnTwo
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (1@2).
-	terniLapilli placeTokenAt: (3@1).
-	terniLapilli placeTokenAt: (2@2).
 	terniLapilli placeTokenAt: (1@1).
-	terniLapilli placeTokenAt: (3@2).
-	self assert: terniLapilli winner equals: #X.
-
-	
-	
-	
-
-			! !
-
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:35:47'!
-test18PlayerXWinsOnColumnThree
-	| terniLapilli |
-	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@3).
-	terniLapilli placeTokenAt: (3@1).
-	terniLapilli placeTokenAt: (2@3).
-	terniLapilli placeTokenAt: (1@1).
-	terniLapilli placeTokenAt: (3@3).
-	self assert: terniLapilli winner equals: #X.
-
-	
-	
-	
-
-			! !
-
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:36:22'!
-test19PlayerXWinsOnDiagonal
-	| terniLapilli |
-	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).
-	terniLapilli placeTokenAt: (2@3).
 	terniLapilli placeTokenAt: (2@2).
-	terniLapilli placeTokenAt: (1@2).
-	terniLapilli placeTokenAt: (3@3).
-	self assert: terniLapilli winner equals: #X.
-
-	
-	
-	
-
-			! !
-
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:36:37'!
-test20PlayerXWinsOnInverDiagonal
-	| terniLapilli |
-	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (3@1).
-	terniLapilli placeTokenAt: (2@3).
-	terniLapilli placeTokenAt: (2@2).
-	terniLapilli placeTokenAt: (1@2).
-	terniLapilli placeTokenAt: (1@3).
-	self assert: terniLapilli winner equals: #X.
-
-	
-	
-	
-
-			! !
-
-!TerniLapilliTests methodsFor: 'test win' stamp: 'AA 6/14/2020 18:36:52'!
-test21PlayerOCanWin
-	| terniLapilli |
-	terniLapilli := TerniLapilli new.
 	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (3@2).
+
+	self assert: (terniLapilli winner) equals: #X.
+
+			! !
+
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:35:48'!
+test18PlayerXWinsOnColumnThree
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
+	
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (3@3).
+
+	self assert: (terniLapilli winner) equals: #X.
+
+			! !
+
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:36:04'!
+test19PlayerXWinsOnDiagonal
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
 	
 	terniLapilli placeTokenAt: (1@1).
-	
-	terniLapilli placeTokenAt: (2@3).
-	
+	terniLapilli placeTokenAt: (2@1).
 	terniLapilli placeTokenAt: (2@2).
-	
-	terniLapilli placeTokenAt: (1@2).
-	
+	terniLapilli placeTokenAt: (3@1).
 	terniLapilli placeTokenAt: (3@3).
-	
-	self assert: terniLapilli winner equals: #O.
 
+	self assert: (terniLapilli winner) equals: #X.
+
+			! !
+
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:36:15'!
+test20PlayerXWinsOnInverseDiagonal
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
 	
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (2@3).
+	terniLapilli placeTokenAt: (3@1).
+
+	self assert: (terniLapilli winner) equals: #X.
+
+			! !
+
+!TerniLapilliTests methodsFor: 'test win' stamp: 'AAB 6/14/2020 18:36:55'!
+test21PlayerOCanWin
+
+	| terniLapilli |
+	terniLapilli := TerniLapilli new.
 	
-	
+	terniLapilli placeTokenAt: (2@1).
+	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@2).
+	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@3).
+	terniLapilli placeTokenAt: (3@3).
+
+	self assert: (terniLapilli winner) equals: #O.
 
 			! !
 
 
-!TerniLapilliTests methodsFor: 'test starting conditions' stamp: 'AA 6/14/2020 18:22:02'!
+!TerniLapilliTests methodsFor: 'test starting conditions' stamp: 'AAB 6/14/2020 18:22:24'!
 test01PlayerXStartsPlaying
 
 	| terniLapilli |
@@ -534,19 +605,18 @@ test01PlayerXStartsPlaying
 	
 	self assert: terniLapilli actualPlayer equals: #X.! !
 
-!TerniLapilliTests methodsFor: 'test starting conditions' stamp: 'AA 6/14/2020 18:32:55'!
+!TerniLapilliTests methodsFor: 'test starting conditions' stamp: 'AAB 6/14/2020 18:33:00'!
 test12ThereIsNoWinnerWhenStarting
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
 	
-	self assert: terniLapilli winner equals: false.
-	
-	
+	self assert: terniLapilli winner equals:false.
 
 			! !
 
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:48:25'!
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:48:38'!
 test02AfterXPlaceTokenIsOTurn
 
 	| terniLapilli |
@@ -555,7 +625,7 @@ test02AfterXPlaceTokenIsOTurn
 	terniLapilli placeTokenAt: (2@2).
 	self assert: terniLapilli actualPlayer equals: #O.! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:48:36'!
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:48:45'!
 test03AfterOPlaceTokenIsXTurn
 
 	| terniLapilli |
@@ -565,8 +635,8 @@ test03AfterOPlaceTokenIsXTurn
 	terniLapilli placeTokenAt: (2@1).
 	self assert: terniLapilli actualPlayer equals: #X.! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:24:25'!
-test04TokenCanOnlyBePlacedWithHigherThan0CordinateY
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:24:27'!
+test04TokenCanOnlyBePlacedWithHigherThanZeroYCoordinate
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
@@ -576,8 +646,8 @@ test04TokenCanOnlyBePlacedWithHigherThan0CordinateY
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription]! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:24:57'!
-test05TokenCanOnlyBePlacedWithLowerThan4CordinateY
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:25:00'!
+test05TokenCanOnlyBePlacedWithLowerThanFourYCoordinate
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
@@ -587,8 +657,8 @@ test05TokenCanOnlyBePlacedWithLowerThan4CordinateY
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription]! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:25:34'!
-test06TokenCanOnlyBePlacedWithLowerThan4CordinateX
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:25:21'!
+test06TokenCanOnlyBePlacedWithLowerThanFourXCoordinate
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
@@ -598,8 +668,8 @@ test06TokenCanOnlyBePlacedWithLowerThan4CordinateX
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription]! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:26:32'!
-test07TokenCanOnlyBePlacedWithHigherThan0CordinateX
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:27:01'!
+test07TokenCanOnlyBePlacedWithHigherThanZeroXCoordinate
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
@@ -609,19 +679,19 @@ test07TokenCanOnlyBePlacedWithHigherThan0CordinateX
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOutsideBoardErrorDescription]! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:27:27'!
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:27:30'!
 test08CantPlaceTokenAboveAnotherToken
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
-	terniLapilli placeTokenAt: (1@1).
+	terniLapilli placeTokenAt: (1@3).
 	
-	self should: [terniLapilli placeTokenAt: (1@1)]
+	self should: [terniLapilli placeTokenAt: (1@3)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokensOverlapErrorDescription]! !
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli tokenOverlapErrorDescription]! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:31:17'!
-test09aPlacedTokenByPlayerXIsFromX
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:31:30'!
+test09APlacedTokenByPlayerXIsFromX
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
@@ -630,8 +700,8 @@ test09aPlacedTokenByPlayerXIsFromX
 	terniLapilli placeTokenAt: (1@1).
 	self assert: (terniLapilli tokenTypeAt: (1@1)) equals: #X.! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:31:36'!
-test10aPlacedTokenByPlayerYIsFromY
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:31:40'!
+test10APlacedTokenByPlayerOIsFromO
 
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
@@ -639,11 +709,11 @@ test10aPlacedTokenByPlayerYIsFromY
 	
 	terniLapilli placeTokenAt: (1@1).
 	terniLapilli placeTokenAt: (1@2).
-	
-	self assert: (terniLapilli tokenTypeAt: (1@2)) equals: #O .! !
+	self assert: #O equals: (terniLapilli tokenTypeAt: (1@2)).! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:32:27'!
-test11OnlySixTokensCanBePlaceOnTheBoard
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:32:27'!
+test11OnlySixTokensCanBePlacedOnTheBoard
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
 	
@@ -653,36 +723,28 @@ test11OnlySixTokensCanBePlaceOnTheBoard
 	terniLapilli placeTokenAt: (2@1).
 	terniLapilli placeTokenAt: (2@2).
 	terniLapilli placeTokenAt: (2@3).
-	
-	self should: [terniLapilli placeTokenAt: (3@1)]
+	self should: [terniLapilli placeTokenAt: (2@2)]
 		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli noMoreTokensAllowedErrorDescription]
-	
-	
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli noMoreTokensAllowedErrorDescription]
 
 			! !
 
-!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AA 6/14/2020 18:37:09'!
+!TerniLapilliTests methodsFor: 'test token placement' stamp: 'AAB 6/14/2020 18:37:14'!
 test22CantPlaceTokenAfterThereIsAWinner
+
 	| terniLapilli |
 	terniLapilli := TerniLapilli new.
+	
 	terniLapilli placeTokenAt: (1@1).
-	terniLapilli placeTokenAt: (2@2).
+	terniLapilli placeTokenAt: (1@2).
 	terniLapilli placeTokenAt: (2@1).
-	terniLapilli placeTokenAt: (3@2).
+	terniLapilli placeTokenAt: (2@2).
 	terniLapilli placeTokenAt: (3@1).
-	
-	
-	self should: [terniLapilli placeTokenAt: (3@3).]
-		raise: Error 
-		withExceptionDo: [:anError | self assert: 
-			anError messageText equals: TerniLapilli gameFinishErrorDescription]
-	
 
-	
-	
-	
+	self should: [terniLapilli placeTokenAt: (3@2)]
+		raise: Error 
+		withExceptionDo: [:anError | self assert: anError messageText equals: TerniLapilli gameFinishedErrorDescription]
+
 
 			! !
 
@@ -694,62 +756,149 @@ Object subclass: #TerniLapilli
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!TerniLapilli methodsFor: 'exceptions' stamp: 'AA 6/14/2020 18:08:39'!
-errorCantMoveBeforeSixTurns
-	self error: self class cantMoveBeforeSixTurnsErrorDescription 
+!TerniLapilli methodsFor: 'exceptions' stamp: 'AAB 6/14/2020 18:11:10'!
+signalCantMoveTokenBeforeSixTurns
 
+	self error: self class cantMoveTokenBeforeSixTurnsErrorDescription! !
+
+!TerniLapilli methodsFor: 'exceptions' stamp: 'AAB 6/14/2020 18:11:33'!
+signalCantPlaceTokenAfterSixTurns
+
+	self error: self class noMoreTokensAllowedErrorDescription ! !
+
+
+!TerniLapilli methodsFor: 'win condition' stamp: 'AAB 6/14/2020 17:01:25'!
+forPlayer: aPlayer winInColumn: aColumn
+	^ (((board at: (1@aColumn)) = aPlayer) and: ((board at: (2@aColumn)) = aPlayer) and: ((board at: (3@aColumn)) = aPlayer)).! !
+
+!TerniLapilli methodsFor: 'win condition' stamp: 'AAB 6/14/2020 17:04:16'!
+forPlayer: aPlayer winInRow: aRow
+	^ (((board at: (aRow@1)) = aPlayer) and: ((board at: (aRow@2)) = aPlayer) and: ((board at: (aRow@3)) = aPlayer)).! !
+
+!TerniLapilli methodsFor: 'win condition' stamp: 'AAB 6/14/2020 17:20:56'!
+isWinner: aPlayer
+
+	((self isWinnerInRow: aPlayer) or: (self isWinnerInColumn: aPlayer) or: (self isWinnerInDiagonal: aPlayer)) 
+	ifTrue: [^actualPlayer]
+	ifFalse: [^false]! !
+
+!TerniLapilli methodsFor: 'win condition' stamp: 'AAB 6/14/2020 17:08:40'!
+isWinnerInColumn: aPlayer
+	| winInFirstColumn winInSecondColumn winInThirdColumn|
+	
+	winInFirstColumn:= self forPlayer: aPlayer winInColumn: 1.
+	winInSecondColumn:= self forPlayer: aPlayer winInColumn: 2.
+	winInThirdColumn:= self forPlayer: aPlayer winInColumn: 3.
+	
+	^ winInFirstColumn or: winInSecondColumn or: winInThirdColumn.
 ! !
 
-!TerniLapilli methodsFor: 'exceptions' stamp: 'AA 6/14/2020 18:09:42'!
-errorPlaceAfter6Moves
-		self error: self class noMoreTokensAllowedErrorDescription.
+!TerniLapilli methodsFor: 'win condition' stamp: 'AAB 6/14/2020 17:07:56'!
+isWinnerInDiagonal: aPlayer
+	| winInDiagonal winInInverseDiagonal |
 
+	winInDiagonal := (((board at: (1@1)) = aPlayer) and: ((board at: (2@2)) = aPlayer) and: ((board at: (3@3)) = aPlayer)).
+	winInInverseDiagonal := (((board at: (1@3)) = aPlayer) and: ((board at: (2@2)) = aPlayer) and: ((board at: (3@1)) = aPlayer)).
+	
+	^winInDiagonal or: winInInverseDiagonal.
+! !
+
+!TerniLapilli methodsFor: 'win condition' stamp: 'AAB 6/14/2020 17:03:40'!
+isWinnerInRow: aPlayer
+	| winInFirstRow winInSecondRow winInThirdRow |
+	
+	winInFirstRow:= self forPlayer: aPlayer winInRow: 1.
+	winInSecondRow:= self forPlayer: aPlayer winInRow: 2.
+	winInThirdRow:= self forPlayer: aPlayer winInRow: 3.
+	
+	^ winInFirstRow or: winInSecondRow or: winInThirdRow.
 ! !
 
 
-!TerniLapilli methodsFor: 'game logic' stamp: 'AA 6/14/2020 18:18:19'!
-advanceTurn
-	winner := self isWinner: actualPlayer.
-	actualPlayer = #X ifTrue: [
-		actualPlayer := #O
-	] ifFalse:[
-		actualPlayer := #X
-	].
-	"increase turn counter"
-	turn := turn +1! !
-
-
-!TerniLapilli methodsFor: 'initialization' stamp: 'AA 6/14/2020 17:15:31'!
+!TerniLapilli methodsFor: 'initialization' stamp: 'AAB 6/14/2020 17:19:43'!
 initialize
 
 	actualPlayer := #X.
 	board := Array2D height: 3 width: 3.
 	board replaceValues: [:elem :x :y | false].
 	turn := 0.
-	winner := false
+	winner := false.! !
 
+
+!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/15/2020 20:49:32'!
+aPosition: aPosition isNeighbourOf: aPosition2
 	
-	! !
+	(2@2) fourNeighbors do: [:neighbourOfTheMiddleOfTheBoard | neighbourOfTheMiddleOfTheBoard = aPosition ifTrue: [^ self aPositionNotInCornersOrMiddleOfTheBoard: aPosition isNeighbourOf: aPosition2 ]].
+	
+	^ self aPositionInACornerOrTheMiddleOfTheBoard: aPosition isNeighbourOf: aPosition2
+! !
+
+!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/15/2020 20:48:50'!
+aPositionInACornerOrTheMiddleOfTheBoard: aPosition isNeighbourOf: aPosition2
+
+	aPosition eightNeighbors do: [:neighbour | neighbour = aPosition2 ifTrue: [^true]].
+	self error: self class invalidMovementErrorDescription.! !
+
+!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/15/2020 20:47:29'!
+aPositionNotInCornersOrMiddleOfTheBoard: aPosition isNeighbourOf: aPosition2
+
+	aPosition fourNeighbors do:[:neighbour | neighbour = aPosition2 ifTrue: [^true]].
+	self error: self class invalidMovementErrorDescription.! !
+
+!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/14/2020 18:13:13'!
+movingTokenFrom: aPosition isValidTo: aPosition2
+
+	aPosition = aPosition2 ifTrue: [
+			self error: self class invalidMovementErrorDescription 
+	].
+	self placingATokenAtIsValid: aPosition2.
+	(self tokenPositionIsOutOfBoundaries: aPosition).
+
+	(board at: aPosition) ~= actualPlayer ifTrue: [
+		self error: self class cantMoveOtherPlayerTokenErrorDescription 
+	].
+	self state moveToken.! !
+
+!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/14/2020 17:23:27'!
+placingATokenAtIsValid: aPosition
+
+	(winner ~= false) ifTrue: [self error: self class gameFinishedErrorDescription].
+	self tokenPositionIsOutOfBoundaries: aPosition.
+	(board at: aPosition) ~= false ifTrue: [self error: self class tokenOverlapErrorDescription ]! !
+
+!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/14/2020 14:54:50'!
+tokenPositionIsOutOfBoundaries: aTokenPosition
+	
+	(aTokenPosition between: (1@1) and: (3@3)) ifFalse: [ self error: self class tokenOutsideBoardErrorDescription ].
+! !
 
 
-!TerniLapilli methodsFor: 'player actions' stamp: 'AA 6/14/2020 16:41:37'!
-moveTokenFrom: aPosition to: aPosition2 
-	self movingAtokenFrom: aPosition isValidTo: aPosition2.
-	self aPosition: aPosition isNeighbourOf: aPosition2. 
-	board at: aPosition put: false. 
+!TerniLapilli methodsFor: 'testing' stamp: 'AAB 6/14/2020 13:13:24'!
+tokenTypeAt: aPosition 
+	
+	^board at: aPosition.! !
+
+
+!TerniLapilli methodsFor: 'player actions' stamp: 'AAB 6/14/2020 16:42:25'!
+moveTokenAt: aPosition to: aPosition2 
+	
+	self movingTokenFrom: aPosition isValidTo: aPosition2.
+	self aPosition: aPosition isNeighbourOf: aPosition2.
+	board at: aPosition put: false.
 	board at: aPosition2 put: actualPlayer.
 	
-	self advanceTurn.! !
-
-!TerniLapilli methodsFor: 'player actions' stamp: 'AA 6/14/2020 18:14:15'!
-placeTokenAt: aPosition
-	self status placeToken.
-	self placingAtokenAtIsValid: aPosition.
-	board at: aPosition put: actualPlayer.
-	
 	self advanceTurn.
-	
 	! !
+
+!TerniLapilli methodsFor: 'player actions' stamp: 'AAB 6/14/2020 18:12:46'!
+placeTokenAt: aPosition
+
+	self state placeToken.
+	
+	self placingATokenAtIsValid: aPosition.
+	board at: aPosition put: actualPlayer.
+
+	self advanceTurn.! !
 
 
 !TerniLapilli methodsFor: 'state' stamp: 'AAB 6/13/2020 15:17:43'!
@@ -757,105 +906,31 @@ actualPlayer
 
 	^ actualPlayer! !
 
-!TerniLapilli methodsFor: 'state' stamp: 'AA 6/14/2020 18:14:45'!
-status
-	^TerniLapilliStatus stateFor: self.
+!TerniLapilli methodsFor: 'state' stamp: 'AAB 6/14/2020 18:12:11'!
+state
 
-! !
+	^ TerniLapilliState stateFor: self.! !
 
-!TerniLapilli methodsFor: 'state' stamp: 'AA 6/14/2020 17:54:19'!
+!TerniLapilli methodsFor: 'state' stamp: 'AAB 6/14/2020 17:54:28'!
 turn
+
 	^turn! !
 
-!TerniLapilli methodsFor: 'state' stamp: 'AA 6/14/2020 17:13:21'!
+!TerniLapilli methodsFor: 'state' stamp: 'AAB 6/14/2020 17:19:55'!
 winner
-	^winner
 
-! !
-
-
-!TerniLapilli methodsFor: 'testing' stamp: 'AA 6/13/2020 17:02:35'!
-tokenTypeAt: aPosition 
-	^board at: aPosition .! !
+	^winner.! !
 
 
-!TerniLapilli methodsFor: 'validation of play' stamp: 'AA 6/14/2020 16:41:37'!
-aPosition: aPosition isNeighbourOf: aPosition2
-	aPosition eightNeighbors do: [:neighbour |aPosition2 = neighbour ifTrue:[^true]].
-	self error: self class invalidMovementErrorDescription.
-
-! !
-
-!TerniLapilli methodsFor: 'validation of play' stamp: 'AA 6/14/2020 18:14:07'!
-movingAtokenFrom: aPosition isValidTo: aPosition2
-	(aPosition = aPosition2) ifTrue: [self error: self class invalidMovementErrorDescription].
-	self placingAtokenAtIsValid: aPosition2.
-	self tokenPositionIsOutOfBoundaries: aPosition.
-	
-	((board at: aPosition) ~= actualPlayer) ifTrue: [self error: self class cantMoveOtherPlayerTokenErrorDescription ].
-	self status moveToken.! !
-
-!TerniLapilli methodsFor: 'validation of play' stamp: 'AA 6/14/2020 17:23:02'!
-placingAtokenAtIsValid: aPosition
-	((winner ~= false)) ifTrue: [self error:  self class gameFinishErrorDescription ].
-	self tokenPositionIsOutOfBoundaries: aPosition.
-	((board at: aPosition) ~= false) ifTrue: [self error: self class tokensOverlapErrorDescription ].
-	! !
-
-!TerniLapilli methodsFor: 'validation of play' stamp: 'AAB 6/13/2020 15:56:46'!
-tokenPositionIsOutOfBoundaries: aTokenPosition
-	
-	(aTokenPosition between: (1@1) and: (3@3)) ifFalse: [^ self error: self class tokenOutsideBoardErrorDescription ].
-! !
-
-
-!TerniLapilli methodsFor: 'win condition' stamp: 'AA 6/14/2020 16:59:53'!
-forPlayer: aPlayer winInColumn: aColumn
-	^((board at: (1@aColumn))= aPlayer) and: ((board at: (2@aColumn))= aPlayer) and: ((board at: (3@aColumn)) = aPlayer).! !
-
-!TerniLapilli methodsFor: 'win condition' stamp: 'AA 6/14/2020 17:05:06'!
-forPlayer: aPlayer winInRow: aRow
-	^((board at: (aRow@1)) = aPlayer) and: ((board at: (aRow@2)) = aPlayer) and: ((board at: (aRow@3)) = aPlayer)
-	
-	! !
-
-!TerniLapilli methodsFor: 'win condition' stamp: 'AA 6/14/2020 17:19:14'!
-isWinner: aPlayer
-	((self isWinnerInDiagonals: aPlayer) or: (self isWinnerInColumns:aPlayer) or: (self isWinnerInRows: aPlayer)) 
-	ifTrue:[^aPlayer]
-	ifFalse:[^false].! !
-
-!TerniLapilli methodsFor: 'win condition' stamp: 'AA 6/14/2020 17:00:21'!
-isWinnerInColumns: aPlayer
-	|winInColumn1 winInColumn2 winInColumn3|
-	winInColumn1 := self forPlayer: aPlayer winInColumn: 1.
-	winInColumn2 := self forPlayer: aPlayer winInColumn: 2.
-	winInColumn3 := self forPlayer: aPlayer winInColumn: 3.
-	^winInColumn1 or: winInColumn2 or: winInColumn3.
-	
-	
-	! !
-
-!TerniLapilli methodsFor: 'win condition' stamp: 'AA 6/14/2020 17:07:24'!
-isWinnerInDiagonals: aPlayer
-	|winInDiagonal1 winInDiagonal2|
-	winInDiagonal1 := ((board at: (1@1)) = aPlayer) and: ((board at: (2@2)) = aPlayer) and: ((board at: (3@3)) = aPlayer).
-	winInDiagonal2  := ((board at: (1@3)) = aPlayer) and: ((board at: (2@2)) = aPlayer) and: ((board at: (3@1)) = aPlayer).
-	^winInDiagonal1 or: winInDiagonal2 .
-
-	
-	
-	! !
-
-!TerniLapilli methodsFor: 'win condition' stamp: 'AA 6/14/2020 17:03:49'!
-isWinnerInRows: aPlayer
-	|winInRow1 winInRow2 winInRow3|	
-	winInRow1 := self forPlayer: aPlayer winInRow: 1.
-	winInRow2 := self forPlayer: aPlayer winInRow: 2.
-	winInRow3 := self forPlayer: aPlayer winInRow: 3.
-	^winInRow1 or: winInRow2 or: winInRow3.
-	
-	! !
+!TerniLapilli methodsFor: 'game logic' stamp: 'AAB 6/14/2020 17:20:22'!
+advanceTurn
+	winner := self isWinner: actualPlayer.
+	actualPlayer = #X ifTrue: [
+		actualPlayer := #O
+	] ifFalse:[
+		actualPlayer := #X
+	].
+	turn := turn+1! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -863,83 +938,109 @@ isWinnerInRows: aPlayer
 TerniLapilli class
 	instanceVariableNames: ''!
 
-!TerniLapilli class methodsFor: 'error' stamp: 'AA 6/13/2020 18:28:26'!
-cantMoveBeforeSixTurnsErrorDescription
-	^'cant move before six turns'! !
-
-!TerniLapilli class methodsFor: 'error' stamp: 'AA 6/13/2020 18:44:12'!
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 18:34:42'!
 cantMoveOtherPlayerTokenErrorDescription
-	^'cant move other player token it is cheating'  ! !
+	
+	^'Cant move other player token, it is cheating'! !
 
-!TerniLapilli class methodsFor: 'error' stamp: 'AA 6/13/2020 18:15:57'!
-gameFinishErrorDescription
-	^'game has already ended. Stop playing'! !
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 18:26:39'!
+cantMoveTokenBeforeSixTurnsErrorDescription
+	
+	^'cantMoveTokenBeforeSixTurnsErrorDescription'! !
 
-!TerniLapilli class methodsFor: 'error' stamp: 'AA 6/13/2020 18:58:17'!
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 19:12:50'!
+cantMoveTokenOutOfBoundariesErrorDescription
+	self shouldBeImplemented.! !
+
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 18:16:33'!
+gameFinishedErrorDescription
+	
+	^'Game is finished'! !
+
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 18:55:27'!
 invalidMovementErrorDescription
-	^'invalid movement'! !
+	
+	^'That is not a valid movement'! !
 
-!TerniLapilli class methodsFor: 'error' stamp: 'AA 6/13/2020 16:50:05'!
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 16:45:17'!
 noMoreTokensAllowedErrorDescription
-	^'no more tokens allowed in game, there are already 6.'! !
+	^'No more tokens allowed'! !
 
-!TerniLapilli class methodsFor: 'error' stamp: 'AAB 6/13/2020 15:39:35'!
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 15:39:35'!
 tokenOutsideBoardErrorDescription
 	
 	^ 'error token outside board'! !
 
-!TerniLapilli class methodsFor: 'error' stamp: 'AA 6/13/2020 16:11:01'!
-tokensOverlapErrorDescription
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'AAB 6/13/2020 16:16:55'!
+tokenOverlapErrorDescription
 	
-	^ 'token overlap'! !
+	^ 'Position is already ocuppied.'! !
 
 
-!classDefinition: #TerniLapilliStatus category: #TerniLapilli!
-Object subclass: #TerniLapilliStatus
+!classDefinition: #TerniLapilliState category: #TerniLapilli!
+Object subclass: #TerniLapilliState
 	instanceVariableNames: 'turn terniLapilli'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!TerniLapilliStatus methodsFor: 'initialization' stamp: 'AA 6/14/2020 17:58:43'!
+!TerniLapilliState methodsFor: 'initialization' stamp: 'AAB 6/14/2020 17:58:50'!
 initializeFor: aTerniLapilli
-	terniLapilli := aTerniLapilli ! !
+	terniLapilli := aTerniLapilli.
+	turn := aTerniLapilli turn .! !
+
+
+!TerniLapilliState methodsFor: 'token movement' stamp: 'AAB 6/14/2020 18:09:30'!
+moveToken
+
+	self subclassResponsibility ! !
+
+
+!TerniLapilliState methodsFor: 'token placement' stamp: 'AAB 6/14/2020 18:09:39'!
+placeToken
+
+	self subclassResponsibility ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TerniLapilliStatus class' category: #TerniLapilli!
-TerniLapilliStatus class
+!classDefinition: 'TerniLapilliState class' category: #TerniLapilli!
+TerniLapilliState class
 	instanceVariableNames: ''!
 
-!TerniLapilliStatus class methodsFor: 'instance creation' stamp: 'AA 6/14/2020 17:53:16'!
-for: aTernilapilli
-	^self new initializeFor: aTernilapilli! !
-
-
-!TerniLapilliStatus class methodsFor: 'state selection' stamp: 'AA 6/14/2020 17:53:44'!
-canHandle: aTernilapilli
+!TerniLapilliState class methodsFor: 'state selection' stamp: 'AAB 6/14/2020 17:51:36'!
+canHandle: aTerniLapilli
+	
 	self subclassResponsibility.! !
 
-!TerniLapilliStatus class methodsFor: 'state selection' stamp: 'AA 6/14/2020 17:52:20'!
-stateFor: aTernilapilli
-	^(self subclasses detect: [:aMarsRoverState | aMarsRoverState canHandle: aTernilapilli  ]) for: aTernilapilli.! !
+!TerniLapilliState class methodsFor: 'state selection' stamp: 'AAB 6/14/2020 17:50:52'!
+stateFor: aTerniLapilli
+
+	^(self subclasses detect: [:aTerniLapilliState | aTerniLapilliState canHandle: aTerniLapilli  ]) for: aTerniLapilli.! !
+
+
+!TerniLapilliState class methodsFor: 'instance creation' stamp: 'AAB 6/14/2020 17:53:25'!
+for: aTerniLapilli
+
+	^self new initializeFor: aTerniLapilli! !
 
 
 !classDefinition: #MoveTokensPhase category: #TerniLapilli!
-TerniLapilliStatus subclass: #MoveTokensPhase
+TerniLapilliState subclass: #MoveTokensPhase
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!MoveTokensPhase methodsFor: 'token movement' stamp: 'AA 6/14/2020 18:03:48'!
+!MoveTokensPhase methodsFor: 'token movement' stamp: 'AAB 6/14/2020 18:09:15'!
 moveToken
+
 	^0! !
 
 
-!MoveTokensPhase methodsFor: 'token placement' stamp: 'AA 6/14/2020 18:10:17'!
+!MoveTokensPhase methodsFor: 'token placement' stamp: 'AAB 6/14/2020 18:11:23'!
 placeToken
-	^terniLapilli errorPlaceAfter6Moves ! !
+
+	^terniLapilli signalCantPlaceTokenAfterSixTurns! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -947,25 +1048,28 @@ placeToken
 MoveTokensPhase class
 	instanceVariableNames: ''!
 
-!MoveTokensPhase class methodsFor: 'state selection' stamp: 'AA 6/14/2020 18:04:34'!
-canHandle: aTernilapilli
-	^aTernilapilli turn >= 6! !
+!MoveTokensPhase class methodsFor: 'state selection' stamp: 'AAB 6/14/2020 17:57:17'!
+canHandle: aTerniLapilli
+
+	^ aTerniLapilli turn >= 6.! !
 
 
 !classDefinition: #PlaceTokensPhase category: #TerniLapilli!
-TerniLapilliStatus subclass: #PlaceTokensPhase
-	instanceVariableNames: ''
+TerniLapilliState subclass: #PlaceTokensPhase
+	instanceVariableNames: 'aTerniLapilli'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TerniLapilli'!
 
-!PlaceTokensPhase methodsFor: 'token movement' stamp: 'AA 6/14/2020 18:10:58'!
+!PlaceTokensPhase methodsFor: 'token movement' stamp: 'AAB 6/14/2020 18:08:21'!
 moveToken
-	^terniLapilli errorCantMoveBeforeSixTurns.! !
+
+	^terniLapilli signalCantMoveTokenBeforeSixTurns! !
 
 
-!PlaceTokensPhase methodsFor: 'token placement' stamp: 'AA 6/14/2020 18:10:39'!
+!PlaceTokensPhase methodsFor: 'token placement' stamp: 'AAB 6/14/2020 18:08:38'!
 placeToken
+
 	^0! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -974,6 +1078,7 @@ placeToken
 PlaceTokensPhase class
 	instanceVariableNames: ''!
 
-!PlaceTokensPhase class methodsFor: 'state selection' stamp: 'AA 6/14/2020 18:04:31'!
-canHandle: aTernilapilli
-	^aTernilapilli turn < 6! !
+!PlaceTokensPhase class methodsFor: 'state selection' stamp: 'AAB 6/14/2020 17:57:23'!
+canHandle: aTerniLapilli
+
+	^ aTerniLapilli turn < 6.! !

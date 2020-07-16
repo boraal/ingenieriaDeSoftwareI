@@ -185,94 +185,180 @@ TestCase subclass: #CashierTest
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!CashierTest methodsFor: 'tests' stamp: 'AAB 7/11/2020 19:12:06'!
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:06:34'!
+merchantProcessorSimulatorThatAcceptsCard
+
+	^ MerchantProcessorSimulator createWith: ['The credit card was accepted.']! !
+
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:44:32'!
 test01CantCheckoutAnEmptyCart 
-	|aCashier aCart aCreditCard| 
+	|aCashier aCart aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
 	
-	aCashier := Cashier new. 
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook. 
 	aCart := Cart acceptingItemsOf: (Array new). 
 	aCreditCard := self creditCard.
+	aMonthYear := Month month: 1 year: 2020.
+	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
 
 	self 
-		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard ] 
+		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor] 
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError| 
 			self assert: anError messageText = Cashier cantCheckoutAnEmptyCartErrorMessage.
-			 self assert: aCashier purchaseListIsEmpty. 
+			 self assert: aCashier salesBookIsEmpty . 
 		] ! !
 
-!CashierTest methodsFor: 'tests' stamp: 'AAB 7/11/2020 19:12:15'!
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:44:52'!
 test02PurchaseListIsNotEmptyAfterAValidCheckout
-	|aCashier aCart priceList aCreditCard | 
+	|aCashier aCart priceList aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
 	
-	aCashier := Cashier new.
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook. 
 	priceList := Dictionary new.
 	priceList add: (Association key: 'validBook' value: 15).
 	aCart := Cart acceptingItemsOf: priceList.
 	aCreditCard := self creditCard.
+	aMonthYear := Month month: 1 year: 2020.
+	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
 
 	aCart add: 'validBook'.
 	
-	self assert: 15 equals: (aCashier checkoutCart: aCart withCreditCard: aCreditCard).
-	self deny: aCashier purchaseListIsEmpty.! !
+	self assert: 15 equals: (aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor ).
+	self deny: aCashier salesBookIsEmpty .! !
 
-!CashierTest methodsFor: 'tests' stamp: 'AAB 7/11/2020 19:12:25'!
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:26:30'!
 test03CartIsEmptyAfterAValidCheckout
 
-	|aCashier aCart priceList aCreditCard | 
+	|aCashier aCart priceList aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
 	
-	aCashier := Cashier new.
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook.
 	priceList := Dictionary new.
 	priceList add: (Association key: 'validBook' value: 15).
 	aCart := Cart acceptingItemsOf: priceList.
 	aCreditCard := self creditCard.
-
+	aMonthYear := Month month: 1 year: 2020.
+	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
 	
 	aCart add: 'validBook'.
-	aCashier checkoutCart: aCart withCreditCard: aCreditCard.
+	aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor.
 	
 	self assert: aCart isEmpty.! !
 
-!CashierTest methodsFor: 'tests' stamp: 'AAB 7/11/2020 19:02:08'!
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:49:11'!
 test04CantCheckoutWithAnExpiredCreditCard
 
-	|aCashier aCart priceList aCreditCard| 
+	|aCashier aCart priceList aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
 	
-	aCashier := Cashier new.
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook. 
 	priceList := Dictionary new.
 	priceList add: (Association key: 'validBook' value: 15).
 	aCart := Cart acceptingItemsOf: priceList.
 	aCreditCard := CreditCard withNumber: '0123012301230123' ofOwner: 'Pepe Sanchez' withExpiration: '052020'.
-	
+	aMonthYear := Month month: 6 year: 2020.
+	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
+
 	aCart add: 'validBook'.
 	
 	self
-		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard ] 
+		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor ] 
 		raise: Error 
 		withExceptionDo: [:anError |
 			self assert: anError messageText = Cashier cantCheckoutWithExpiredCreditCardErrorMessage.
-			self assert: aCashier purchaseListIsEmpty.
+			self assert: aCashier salesBookIsEmpty .
 			self deny: aCart isEmpty.
 		]
 ! !
 
-!CashierTest methodsFor: 'tests' stamp: 'AAB 7/11/2020 19:42:34'!
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:49:18'!
 test05PurchaseListContainsItemsSoldInCorrectFormat
-	|aCashier aCart priceList aCreditCard | 
+	|aCashier aCart priceList aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
 	
-	aCashier := Cashier new.
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook.
 	priceList := Dictionary new.
 	priceList add: (Association key: 'validBook' value: 15).
 	priceList add: (Association key: 'anotherValidBook' value: 10).
 	aCart := Cart acceptingItemsOf: priceList.
 	aCreditCard := self creditCard.
+	aMonthYear := Month month: 1 year: 2020.
+	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
 
 	aCart add: 4 of: 'validBook'.
 	aCart add: 2 of: 'anotherValidBook'.
 	
-	aCashier checkoutCart: aCart withCreditCard: aCreditCard.
+	aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor.
 	
-	self assert: '|anotherValidBook|2|validBook|4|80' equals: (aCashier lastPurchase).
+	self assert: '|anotherValidBook|2|validBook|4|80' equals: (aCashier lastSale).
+! !
+
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:49:22'!
+test06CantCheckoutWithAStolenCreditCard
+	|aCashier aCart priceList aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
+	
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook.
+	priceList := Dictionary new.
+	priceList add: (Association key: 'validBook' value: 15).
+	priceList add: (Association key: 'anotherValidBook' value: 10).
+	aCart := Cart acceptingItemsOf: priceList.
+	aCreditCard := self creditCard.
+	aMonthYear := Month month: 1 year: 2020.
+	aMerchantProcessor := MerchantProcessorSimulator createWith: [self error: MerchantProcessorSimulator stolenCardErrorDescription].
+
+	aCart add: 4 of: 'validBook'.
+	aCart add: 2 of: 'anotherValidBook'.
+	
+	self 
+		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor]
+		raise: Error
+		withExceptionDo: [:anError | 
+			self assert: anError messageText = MerchantProcessorSimulator stolenCardErrorDescription.
+			self assert: aCashier salesBookIsEmpty.
+			self deny: aCart isEmpty.
+		]
+
+! !
+
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:49:26'!
+test07CantCheckoutWithACreditCardThatDoesntHaveEnoughFunds
+	|aCashier aCart priceList aCreditCard aMonthYear aMerchantProcessor aSalesBook| 
+	
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook.
+	priceList := Dictionary new.
+	priceList add: (Association key: 'validBook' value: 15).
+	priceList add: (Association key: 'anotherValidBook' value: 10).
+	aCart := Cart acceptingItemsOf: priceList.
+	aCreditCard := self creditCard.
+	aMonthYear := Month month: 1 year: 2020.
+	aMerchantProcessor := MerchantProcessorSimulator createWith: [self error: MerchantProcessorSimulator  notEnoughFundsErrorDescription].
+
+	aCart add: 4 of: 'validBook'.
+	aCart add: 2 of: 'anotherValidBook'.
+	
+	self 
+		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonthYear usingMerchantProcessor: aMerchantProcessor]
+		raise: Error
+		withExceptionDo: [:anError | 
+			self assert: anError messageText = MerchantProcessorSimulator notEnoughFundsErrorDescription.
+			self assert: aCashier salesBookIsEmpty.
+			self deny: aCart isEmpty.
+		]
+
+! !
+
+!CashierTest methodsFor: 'tests' stamp: 'AAB 7/15/2020 23:49:31'!
+test08CashierCanReadFromANonEmptySalseBook
+	|aCashier aSalesBook| 
+	
+	aSalesBook := self nonEmptySalesBook.
+	aCashier := Cashier with: aSalesBook.
+	
+	self assert: '|anotherValidBook|2|validBook|4|80' equals: aCashier lastSale.
+
 ! !
 
 
@@ -280,6 +366,20 @@ test05PurchaseListContainsItemsSoldInCorrectFormat
 creditCard
 
 	^CreditCard withNumber: '0123012301230123' ofOwner: 'Pepe Sanchez' withExpiration: '122020'.	! !
+
+!CashierTest methodsFor: 'setUp' stamp: 'AAB 7/15/2020 23:22:34'!
+emptySalesBook
+	
+	^ OrderedCollection new.! !
+
+!CashierTest methodsFor: 'setUp' stamp: 'AAB 7/15/2020 23:39:58'!
+nonEmptySalesBook
+	| salesBook |
+	
+	salesBook := OrderedCollection new.
+	salesBook addLast: '|anotherValidBook|2|validBook|4|80'.
+	
+	^ salesBook.! !
 
 
 !classDefinition: #CreditCardTest category: #TusLibros!
@@ -372,6 +472,42 @@ test10CreditCardExpirationMustHaveAValidMonthNumber
 		should: [CreditCard withNumber: '0000000000000000' ofOwner: 'Pepee Sanchez' withExpiration: '132022'] 
 		raise: Error 
 		withExceptionDo: [:anError | self assert: anError messageText = CreditCard creditCardExpirationMustBeAValidExpirationErrorMessage ].! !
+
+!CreditCardTest methodsFor: 'tests' stamp: 'AAB 7/13/2020 20:38:42'!
+test11ACreditCardDoesntExpireUntilExpirationDate
+
+	| aCreditCard aMonthYear |
+
+	aCreditCard := CreditCard withNumber: '0000000000000000' ofOwner: 'Pepee Sanchez' withExpiration: '062020'.
+	aMonthYear := Month month: 1 year: 2020.
+	
+	self deny: (aCreditCard isExpiredOn: aMonthYear).
+	
+		! !
+
+!CreditCardTest methodsFor: 'tests' stamp: 'AAB 7/13/2020 20:39:46'!
+test12ACreditCardUsedYearsAfterExpirationIsExpired
+
+	| aCreditCard aMonthYear |
+
+	aCreditCard := CreditCard withNumber: '0000000000000000' ofOwner: 'Pepee Sanchez' withExpiration: '062020'.
+	aMonthYear := Month month: 1 year: 2021.
+	
+	self assert: (aCreditCard isExpiredOn: aMonthYear).
+	
+		! !
+
+!CreditCardTest methodsFor: 'tests' stamp: 'AAB 7/13/2020 20:39:39'!
+test13ACreditCardUsedMonthsAfterExpirationIsExpired
+
+	| aCreditCard aMonthYear |
+
+	aCreditCard := CreditCard withNumber: '0000000000000000' ofOwner: 'Pepee Sanchez' withExpiration: '062020'.
+	aMonthYear := Month month: 7 year: 2020.
+	
+	self assert: (aCreditCard isExpiredOn: aMonthYear).
+	
+		! !
 
 
 !classDefinition: #Cart category: #TusLibros!
@@ -489,15 +625,10 @@ acceptingItemsOf: aPriceList
 
 !classDefinition: #Cashier category: #TusLibros!
 Object subclass: #Cashier
-	instanceVariableNames: 'purchaseList'
+	instanceVariableNames: 'salesBook'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
-
-!Cashier methodsFor: 'merchant processor' stamp: 'AAB 7/11/2020 19:09:55'!
-sendToMerchantProcessor: aCreditCard
-
-! !
 
 
 !Cashier methodsFor: 'validations' stamp: 'AAB 7/11/2020 19:10:42'!
@@ -505,51 +636,49 @@ assertCartIsNotEmpty: aCart
 
 	^ aCart isEmpty ifTrue: [self error: self class cantCheckoutAnEmptyCartErrorMessage]! !
 
-!Cashier methodsFor: 'validations' stamp: 'AAB 7/11/2020 19:10:56'!
-assertCreditCardIsNotExpired: aCreditCard
+!Cashier methodsFor: 'validations' stamp: 'AAB 7/13/2020 20:46:15'!
+assertCreditCardIsNotExpired: aCreditCard onDate: aMonthYear
 
-	^ aCreditCard isExpired ifTrue: [self error: self class cantCheckoutWithExpiredCreditCardErrorMessage ]! !
-
-
-!Cashier methodsFor: 'initialization' stamp: 'AAB 7/11/2020 19:39:23'!
-initialize
-
-	purchaseList := OrderedCollection new.! !
+	^ (aCreditCard isExpiredOn: aMonthYear) ifTrue: [self error: self class cantCheckoutWithExpiredCreditCardErrorMessage ]! !
 
 
-!Cashier methodsFor: 'checkout' stamp: 'AAB 7/11/2020 19:46:15'!
-checkoutCart: aCart withCreditCard: aCreditCard 
+!Cashier methodsFor: 'initialization' stamp: 'AAB 7/15/2020 23:31:05'!
+initializeWith: aSalesBook 
+
+	salesBook := aSalesBook.! !
+
+
+!Cashier methodsFor: 'checkout' stamp: 'AAB 7/15/2020 23:44:06'!
+checkoutCart: aCart withCreditCard: aCreditCard onDate: aMonth usingMerchantProcessor: aMerchantProcessorSimulator 
 	
 	| totalPriceOfProducts |
 	
 	self assertCartIsNotEmpty: aCart.
-	self assertCreditCardIsNotExpired: aCreditCard.
+	self assertCreditCardIsNotExpired: aCreditCard onDate: aMonth.
 	
-	self sendToMerchantProcessor: aCreditCard .
 	totalPriceOfProducts := aCart totalPriceOfProducts.
-	self addLastPurchaseToPurchaseList: aCart.
+	aMerchantProcessorSimulator debit: totalPriceOfProducts from: aCreditCard.
+	self addLastSaleToSalesBook: aCart.
 	
 	aCart emptyCart.
 	^totalPriceOfProducts.
+! !
 
+
+!Cashier methodsFor: 'sales book' stamp: 'AAB 7/15/2020 23:44:06'!
+addLastSaleToSalesBook: aCart
+
+	^ salesBook addLast: aCart listOfItems! !
+
+!Cashier methodsFor: 'sales book' stamp: 'AAB 7/15/2020 23:43:42'!
+lastSale
 	
-	! !
+	^ salesBook at: (salesBook size)! !
 
-
-!Cashier methodsFor: 'purchase list' stamp: 'AAB 7/11/2020 19:46:15'!
-addLastPurchaseToPurchaseList: aCart
-
-	^ purchaseList addLast: aCart listOfItems! !
-
-!Cashier methodsFor: 'purchase list' stamp: 'AAB 7/11/2020 19:38:46'!
-lastPurchase
+!Cashier methodsFor: 'sales book' stamp: 'AAB 7/15/2020 23:43:32'!
+salesBookIsEmpty
 	
-	^ purchaseList at: (purchaseList size)! !
-
-!Cashier methodsFor: 'purchase list' stamp: 'AAB 7/11/2020 19:43:10'!
-purchaseListIsEmpty
-	
-	^purchaseList isEmpty! !
+	^salesBook isEmpty! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -566,6 +695,12 @@ cantCheckoutAnEmptyCartErrorMessage
 cantCheckoutWithExpiredCreditCardErrorMessage
 	
 	^ 'Cant checkout with an expired credit card'! !
+
+
+!Cashier class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:23:17'!
+with: aSalesBook
+	
+	^ self new initializeWith: aSalesBook.! !
 
 
 !classDefinition: #CreditCard category: #TusLibros!
@@ -599,28 +734,20 @@ creditCardOwnerName
 	^ownerName ! !
 
 
-!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/11/2020 18:59:20'!
-expiredAPreviousYear
-
-	| today |
+!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/13/2020 20:35:41'!
+expiredAPreviousYear: aYearNumber
 	
-	today := Date today.
+	^ aYearNumber > expiration yearNumber! !
 
-	^(expiration yearNumber < today yearNumber)! !
-
-!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/11/2020 18:59:47'!
-expiredThisYear
-
-	| today |
+!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/13/2020 20:36:36'!
+expiredOnYear: aMonthYear
 	
-	today := Date today.
+	^ ((aMonthYear yearNumber = expiration yearNumber) and: (aMonthYear monthIndex > expiration monthIndex ))  ! !
 
-	^((today yearNumber = expiration yearNumber) and: (expiration monthIndex < today monthIndex))! !
-
-!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/11/2020 19:00:18'!
-isExpired
+!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/13/2020 20:37:09'!
+isExpiredOn: aMonthDate
 	
-	^ (self expiredThisYear) or: (self expiredAPreviousYear).! !
+	^ (self expiredAPreviousYear: aMonthDate yearNumber) or: (self expiredOnYear: aMonthDate ).! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -709,3 +836,73 @@ withNumber: creditCardNumberAsString ofOwner: creditCardOwnerName withExpiration
 monthFromString: creditCardExpirationAsString
 
 	^ creditCardExpirationAsString truncateTo: 2! !
+
+
+!classDefinition: #MerchantProcessor category: #TusLibros!
+Object subclass: #MerchantProcessor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!MerchantProcessor methodsFor: 'response' stamp: 'AAB 7/15/2020 23:47:34'!
+debit: anAmount from: aCreditCard 
+	
+	self subclassResponsibility.! !
+
+
+!MerchantProcessor methodsFor: 'initialization' stamp: 'AAB 7/15/2020 23:48:23'!
+initializeWith: aBlockClosure 
+	
+	self subclassResponsibility.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'MerchantProcessor class' category: #TusLibros!
+MerchantProcessor class
+	instanceVariableNames: ''!
+
+!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:47:16'!
+expiredCreditCardErrorDescription
+	
+	^ 'Cant debit from an expired credit card'! !
+
+!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:47:08'!
+notEnoughFundsErrorDescription
+	
+	^ 'Not enough funds in credit card'! !
+
+!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:46:59'!
+stolenCardErrorDescription
+
+	^ 'Can not debit from a stolen card'! !
+
+
+!classDefinition: #MerchantProcessorSimulator category: #TusLibros!
+MerchantProcessor subclass: #MerchantProcessorSimulator
+	instanceVariableNames: 'behaviour'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!MerchantProcessorSimulator methodsFor: 'response' stamp: 'AAB 7/15/2020 22:37:14'!
+debit: anAmount from: aCreditCard 
+	
+	behaviour value.! !
+
+
+!MerchantProcessorSimulator methodsFor: 'initialization' stamp: 'AAB 7/15/2020 22:32:38'!
+initializeWith: aBlockClosure 
+	
+	behaviour := aBlockClosure.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'MerchantProcessorSimulator class' category: #TusLibros!
+MerchantProcessorSimulator class
+	instanceVariableNames: ''!
+
+!MerchantProcessorSimulator class methodsFor: 'instance creation' stamp: 'AAB 7/15/2020 22:31:36'!
+createWith: aBlockClosure 
+	
+	^ self new initializeWith: aBlockClosure.! !

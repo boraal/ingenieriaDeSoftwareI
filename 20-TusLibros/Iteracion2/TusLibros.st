@@ -577,18 +577,13 @@ add: aQuantity of: anItem
 	aQuantity timesRepeat: [items add: anItem ]! !
 
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'AAB 7/11/2020 16:08:51'!
-emptyCart
-	
-	items := OrderedCollection new.! !
-
-!Cart methodsFor: 'as yet unclassified' stamp: 'AAB 7/11/2020 19:31:47'!
+!Cart methodsFor: 'listing items in cart' stamp: 'AAB 7/11/2020 19:31:47'!
 listOfItems
 
 	^ (self listOfProducts) ,'|', (self totalPriceOfProducts asString)
 	! !
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'AAB 7/11/2020 19:41:20'!
+!Cart methodsFor: 'listing items in cart' stamp: 'AAB 7/11/2020 19:41:20'!
 listOfProducts
 
 	| bag |
@@ -610,6 +605,12 @@ totalPriceOfProducts
 		total := total + priceList at: item.
 	].
 	^total! !
+
+
+!Cart methodsFor: 'cart emptying' stamp: 'AAB 7/11/2020 16:08:51'!
+emptyCart
+	
+	items := OrderedCollection new.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -697,7 +698,7 @@ cantCheckoutWithExpiredCreditCardErrorMessage
 	^ 'Cant checkout with an expired credit card'! !
 
 
-!Cashier class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:23:17'!
+!Cashier class methodsFor: 'instance creation' stamp: 'AAB 7/15/2020 23:23:17'!
 with: aSalesBook
 	
 	^ self new initializeWith: aSalesBook.! !
@@ -862,17 +863,17 @@ initializeWith: aBlockClosure
 MerchantProcessor class
 	instanceVariableNames: ''!
 
-!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:47:16'!
+!MerchantProcessor class methodsFor: 'error messages' stamp: 'AAB 7/15/2020 23:47:16'!
 expiredCreditCardErrorDescription
 	
 	^ 'Cant debit from an expired credit card'! !
 
-!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:47:08'!
+!MerchantProcessor class methodsFor: 'error messages' stamp: 'AAB 7/15/2020 23:47:08'!
 notEnoughFundsErrorDescription
 	
 	^ 'Not enough funds in credit card'! !
 
-!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'AAB 7/15/2020 23:46:59'!
+!MerchantProcessor class methodsFor: 'error messages' stamp: 'AAB 7/15/2020 23:46:59'!
 stolenCardErrorDescription
 
 	^ 'Can not debit from a stolen card'! !

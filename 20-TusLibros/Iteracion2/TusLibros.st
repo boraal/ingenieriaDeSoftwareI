@@ -740,15 +740,15 @@ expiredAPreviousYear: aYearNumber
 	
 	^ aYearNumber > expiration yearNumber! !
 
-!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/13/2020 20:36:36'!
+!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/16/2020 14:32:13'!
 expiredOnYear: aMonthYear
 	
-	^ ((aMonthYear yearNumber = expiration yearNumber) and: (aMonthYear monthIndex > expiration monthIndex ))  ! !
+	^ (aMonthYear yearNumber = expiration yearNumber) and: [aMonthYear monthIndex > expiration monthIndex ]  ! !
 
-!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/13/2020 20:37:09'!
+!CreditCard methodsFor: 'expiration' stamp: 'AAB 7/16/2020 14:31:44'!
 isExpiredOn: aMonthDate
 	
-	^ (self expiredAPreviousYear: aMonthDate yearNumber) or: (self expiredOnYear: aMonthDate ).! !
+	^ (self expiredAPreviousYear: aMonthDate yearNumber) or: [self expiredOnYear: aMonthDate ].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 

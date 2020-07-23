@@ -209,9 +209,9 @@ test01CantCheckoutAnEmptyCart
 			 self assert: (aCashier salesBookIsEmpty: clientId). 
 		] ! !
 
-!CashierTest methodsFor: 'tests' stamp: 'AA 7/21/2020 22:57:12'!
+!CashierTest methodsFor: 'tests' stamp: 'AA 7/22/2020 22:25:36'!
 test02PurchaseListIsNotEmptyAfterAValidCheckout
-	|aCashier aCart priceList aCreditCard aDate aMerchantProcessor aSalesBook sale | 
+	|aCashier aCart priceList aCreditCard aDate aMerchantProcessor aSalesBook | 
 	
 	aSalesBook := self emptySalesBook.
 	aCashier := Cashier with: aSalesBook. 
@@ -223,9 +223,9 @@ test02PurchaseListIsNotEmptyAfterAValidCheckout
 	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
 
 	aCart add: 'validBook'.
-	sale := (aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aDate usingMerchantProcessor: aMerchantProcessor forClient: clientId ).
+	 (aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aDate usingMerchantProcessor: aMerchantProcessor forClient: clientId ).
 	
-	self assert: 15 equals: sale total.
+	self assert: 15 equals: (aCashier lastSale: clientId) total . 
 	self deny: (aCashier salesBookIsEmpty: clientId) .! !
 
 !CashierTest methodsFor: 'tests' stamp: 'AA 7/21/2020 22:51:54'!
@@ -376,6 +376,31 @@ test08CashierCanReadFromANonEmptySalesBook
 	self assert: 2 equals: (lastSale occurrencesOf: 'anotherValidBook').
 	self assert: 2 equals: lastSale size.
 
+! !
+
+!CashierTest methodsFor: 'tests' stamp: 'AA 7/22/2020 22:50:26'!
+test09CashierCantCheckoutACartWithTotalHigherThanAQuadrillion
+	|aCashier aCart priceList aCreditCard aDate aMerchantProcessor aSalesBook | 
+	
+	aSalesBook := self emptySalesBook.
+	aCashier := Cashier with: aSalesBook.
+	priceList := Dictionary new.
+	priceList add: (Association key: 'anotherValidBook' value: 1000000000000000).
+	aCart := Cart acceptingItemsOf: priceList.
+	aCreditCard := self creditCard.
+	aDate := Date year: 2020 month: 1 day: 1.
+	aMerchantProcessor := self merchantProcessorSimulatorThatAcceptsCard.
+
+	aCart add: 1 of: 'anotherValidBook'.
+
+	self 
+		should: [aCashier checkoutCart: aCart withCreditCard: aCreditCard onDate: aDate usingMerchantProcessor: aMerchantProcessor forClient: clientId .]
+		raise: Error
+		withExceptionDo: [:anError | 
+			self assert: anError messageText = Cashier excededMaximumTransactionAmmountErrorDescription.
+			self assert: (aCashier salesBookIsEmpty: clientId ).
+			self deny: aCart isEmpty.
+		]
 ! !
 
 
@@ -1320,7 +1345,7 @@ createWithCashier: aCashier merchantProcessor: aMerchantProcessor client: aClien
 
 !classDefinition: #Cashier category: #TusLibros!
 Object subclass: #Cashier
-	instanceVariableNames: 'salesBook'
+	instanceVariableNames: 'salesBook saleId'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
@@ -1335,14 +1360,20 @@ assertCreditCardIsNotExpired: aCreditCard onDate: aMonthYear
 
 	^ (aCreditCard isExpiredOn: aMonthYear) ifTrue: [self error: self class cantCheckoutWithExpiredCreditCardErrorMessage ]! !
 
+!Cashier methodsFor: 'validations' stamp: 'AA 7/22/2020 22:49:55'!
+assertTotalDoesntExceedMaximumTransactionAmmount: totalPriceOfProducts
 
-!Cashier methodsFor: 'initialization' stamp: 'AAB 7/15/2020 23:31:05'!
+	^ (totalPriceOfProducts decimalDigitLength > 15) ifTrue: [self error: self class excededMaximumTransactionAmmountErrorDescription]! !
+
+
+!Cashier methodsFor: 'initialization' stamp: 'AA 7/22/2020 22:26:28'!
 initializeWith: aSalesBook 
 
-	salesBook := aSalesBook.! !
+	salesBook := aSalesBook.
+	saleId := 0.! !
 
 
-!Cashier methodsFor: 'checkout' stamp: 'AA 7/22/2020 00:27:10'!
+!Cashier methodsFor: 'checkout' stamp: 'AA 7/22/2020 22:49:55'!
 checkoutCart: aCart withCreditCard: aCreditCard onDate: aDate usingMerchantProcessor: aMerchantProcessorSimulator forClient: aClient
 	
 	| totalPriceOfProducts sale |
@@ -1351,6 +1382,8 @@ checkoutCart: aCart withCreditCard: aCreditCard onDate: aDate usingMerchantProce
 	self assertCreditCardIsNotExpired: aCreditCard onDate: aDate.
 	
 	totalPriceOfProducts := aCart totalPriceOfProducts.
+	
+	self assertTotalDoesntExceedMaximumTransactionAmmount: totalPriceOfProducts. 
 	aMerchantProcessorSimulator debit: totalPriceOfProducts from: aCreditCard.
 	
 	
@@ -1359,7 +1392,8 @@ checkoutCart: aCart withCreditCard: aCreditCard onDate: aDate usingMerchantProce
 	
 	salesBook addSale: sale purchasedBy: aClient . 
 	aCart emptyCart.
-	^sale.
+	saleId := saleId +1.
+	^saleId-1
 ! !
 
 
@@ -1398,6 +1432,11 @@ cantCheckoutWithExpiredCreditCardErrorMessage
 with: aSalesBook
 	
 	^ self new initializeWith: aSalesBook.! !
+
+
+!Cashier class methodsFor: 'as yet unclassified' stamp: 'AA 7/22/2020 22:50:52'!
+excededMaximumTransactionAmmountErrorDescription
+	^'exceded maximum transaction ammount'! !
 
 
 !classDefinition: #ClockSimulator category: #TusLibros!

@@ -924,9 +924,9 @@ cashier
 
 	^ Cashier with: SalesBook new.! !
 
-!InterfazTusLibrosTest methodsFor: 'simulated items initialization' stamp: 'AA 7/21/2020 22:29:35'!
+!InterfazTusLibrosTest methodsFor: 'simulated items initialization' stamp: 'AAB 7/23/2020 14:45:48'!
 clockSimulator
-	^ClockSimulator inializeWith: DateAndTime now.! !
+	^ClockSimulator createWith: DateAndTime now.! !
 
 !InterfazTusLibrosTest methodsFor: 'simulated items initialization' stamp: 'AA 7/21/2020 23:53:21'!
 interfaz
@@ -1146,31 +1146,22 @@ Object subclass: #AuthenticationSystemSimulator
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!AuthenticationSystemSimulator methodsFor: 'as yet unclassified' stamp: 'AAB 7/19/2020 16:24:44'!
-addClient: aClientId withPassword: aClientIdPassword
-	
-	client := aClientId.
-	password := aClientIdPassword.! !
-
-!AuthenticationSystemSimulator methodsFor: 'as yet unclassified' stamp: 'AAB 7/19/2020 16:25:29'!
+!AuthenticationSystemSimulator methodsFor: 'authentication' stamp: 'AAB 7/19/2020 16:25:29'!
 isValidClient: aClientId
 	
 	^ client = aClientId! !
 
-!AuthenticationSystemSimulator methodsFor: 'as yet unclassified' stamp: 'AAB 7/20/2020 08:21:39'!
+!AuthenticationSystemSimulator methodsFor: 'authentication' stamp: 'AAB 7/20/2020 08:21:39'!
 isValidPassword: aPassword forClient: aClientId 
 	
 	^ aPassword = password and: [self isValidClient: aClientId ]! !
 
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'AuthenticationSystemSimulator class' category: #TusLibros!
-AuthenticationSystemSimulator class
-	instanceVariableNames: ''!
-
-!AuthenticationSystemSimulator class methodsFor: 'as yet unclassified' stamp: 'AAB 7/19/2020 16:22:42'!
-createWith: aString 
-	self shouldBeImplemented.! !
+!AuthenticationSystemSimulator methodsFor: 'add client' stamp: 'AAB 7/19/2020 16:24:44'!
+addClient: aClientId withPassword: aClientIdPassword
+	
+	client := aClientId.
+	password := aClientIdPassword.! !
 
 
 !classDefinition: #Cart category: #TusLibros!
@@ -1338,7 +1329,7 @@ updatelastTimeUsed
 CartSession class
 	instanceVariableNames: ''!
 
-!CartSession class methodsFor: 'initialization' stamp: 'AA 7/22/2020 00:18:13'!
+!CartSession class methodsFor: 'instance creation' stamp: 'AA 7/22/2020 00:18:13'!
 createWithCashier: aCashier merchantProcessor: aMerchantProcessor client: aClientId clock: dateAndTime cart: aCart
 	^self new initializeWithCashier: aCashier merchantProcessor: aMerchantProcessor client: aClientId dateAndTime: dateAndTime cart: aCart! !
 
@@ -1427,16 +1418,15 @@ cantCheckoutWithExpiredCreditCardErrorMessage
 	
 	^ 'Cant checkout with an expired credit card'! !
 
+!Cashier class methodsFor: 'error messages' stamp: 'AA 7/22/2020 22:50:52'!
+excededMaximumTransactionAmmountErrorDescription
+	^'exceded maximum transaction ammount'! !
+
 
 !Cashier class methodsFor: 'instance creation' stamp: 'AAB 7/15/2020 23:23:17'!
 with: aSalesBook
 	
 	^ self new initializeWith: aSalesBook.! !
-
-
-!Cashier class methodsFor: 'as yet unclassified' stamp: 'AA 7/22/2020 22:50:52'!
-excededMaximumTransactionAmmountErrorDescription
-	^'exceded maximum transaction ammount'! !
 
 
 !classDefinition: #ClockSimulator category: #TusLibros!
@@ -1465,8 +1455,8 @@ now
 ClockSimulator class
 	instanceVariableNames: ''!
 
-!ClockSimulator class methodsFor: 'initialization' stamp: 'AA 7/21/2020 21:30:52'!
-inializeWith: aDateAndTime
+!ClockSimulator class methodsFor: 'instance creation' stamp: 'AAB 7/23/2020 14:45:48'!
+createWith: aDateAndTime
 	^self new initializeWith: aDateAndTime .! !
 
 
@@ -1741,7 +1731,7 @@ wrongPasswordErrorMessage
 	^ 'Wrong password'! !
 
 
-!InterfazTusLibros class methodsFor: 'initialization' stamp: 'AA 7/21/2020 21:45:08'!
+!InterfazTusLibros class methodsFor: 'instance creation' stamp: 'AA 7/21/2020 21:45:08'!
 createWithAuthenticationSystem: anAuthenticationSystemSimulator priceList: aPriceList cashier: aCashier merchantProcessor: aMerchantProcessor clock: aClock
 	
 	^ self new initializeWithAuthenticationSystem: anAuthenticationSystemSimulator priceList: aPriceList cashier: aCashier merchantProcessor: aMerchantProcessor clock: aClock.! !
@@ -1833,20 +1823,20 @@ initializeWithProducts: products costing: anAmount madeIn: aDate using: aCreditC
 	creditCard := aCreditCard.! !
 
 
-!Sale methodsFor: 'getters' stamp: 'AA 7/22/2020 00:35:35'!
+!Sale methodsFor: 'values' stamp: 'AA 7/22/2020 00:35:35'!
 creditCard
 	^creditCard.! !
 
-!Sale methodsFor: 'getters' stamp: 'AA 7/22/2020 00:35:18'!
+!Sale methodsFor: 'values' stamp: 'AA 7/22/2020 00:35:18'!
 date
 	^date! !
 
-!Sale methodsFor: 'getters' stamp: 'AAB 7/20/2020 11:16:09'!
+!Sale methodsFor: 'values' stamp: 'AAB 7/20/2020 11:16:09'!
 productsSold
 	
 	^ productsSold copy! !
 
-!Sale methodsFor: 'getters' stamp: 'AAB 7/20/2020 10:56:57'!
+!Sale methodsFor: 'values' stamp: 'AAB 7/20/2020 10:56:57'!
 total
 	
 	^total! !
